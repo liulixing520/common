@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jt.lux.mapper.security.PartyMapper" >
+  <resultMap id="BaseResultMap" type="com.jt.lux.entity.security.Party" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="PARTY_ID" property="partyId" jdbcType="VARCHAR" />
+    <result column="PARTY_TYPE_ID" property="partyTypeId" jdbcType="VARCHAR" />
+    <result column="EXTERNAL_ID" property="externalId" jdbcType="VARCHAR" />
+    <result column="PREFERRED_CURRENCY_UOM_ID" property="preferredCurrencyUomId" jdbcType="VARCHAR" />
+    <result column="STATUS_ID" property="statusId" jdbcType="VARCHAR" />
+    <result column="CREATED_DATE" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="CREATED_BY_USER_LOGIN" property="createdByUserLogin" jdbcType="VARCHAR" />
+    <result column="LAST_MODIFIED_DATE" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+    <result column="LAST_MODIFIED_BY_USER_LOGIN" property="lastModifiedByUserLogin" jdbcType="VARCHAR" />
+    <result column="DATA_SOURCE_ID" property="dataSourceId" jdbcType="VARCHAR" />
+    <result column="IS_UNREAD" property="isUnread" jdbcType="CHAR" />
+    <result column="LAST_UPDATED_STAMP" property="lastUpdatedStamp" jdbcType="TIMESTAMP" />
+    <result column="LAST_UPDATED_TX_STAMP" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP" />
+    <result column="CREATED_STAMP" property="createdStamp" jdbcType="TIMESTAMP" />
+    <result column="CREATED_TX_STAMP" property="createdTxStamp" jdbcType="TIMESTAMP" />
+    <result column="DESCRIPTION" property="description" jdbcType="LONGVARCHAR" />
+  </resultMap>
+</mapper>

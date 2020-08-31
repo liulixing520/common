@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jt.lux.mapper.security.PartyRelationshipMapper" >
+  <resultMap id="BaseResultMap" type="com.jt.lux.entity.security.PartyRelationship" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="PARTY_ID_FROM" property="partyIdFrom" jdbcType="VARCHAR" />
+    <id column="PARTY_ID_TO" property="partyIdTo" jdbcType="VARCHAR" />
+    <id column="ROLE_TYPE_ID_FROM" property="roleTypeIdFrom" jdbcType="VARCHAR" />
+    <id column="ROLE_TYPE_ID_TO" property="roleTypeIdTo" jdbcType="VARCHAR" />
+    <id column="FROM_DATE" property="fromDate" jdbcType="TIMESTAMP" />
+    <result column="THRU_DATE" property="thruDate" jdbcType="TIMESTAMP" />
+    <result column="STATUS_ID" property="statusId" jdbcType="VARCHAR" />
+    <result column="RELATIONSHIP_NAME" property="relationshipName" jdbcType="VARCHAR" />
+    <result column="SECURITY_GROUP_ID" property="securityGroupId" jdbcType="VARCHAR" />
+    <result column="PRIORITY_TYPE_ID" property="priorityTypeId" jdbcType="VARCHAR" />
+    <result column="PARTY_RELATIONSHIP_TYPE_ID" property="partyRelationshipTypeId" jdbcType="VARCHAR" />
+    <result column="PERMISSIONS_ENUM_ID" property="permissionsEnumId" jdbcType="VARCHAR" />
+    <result column="POSITION_TITLE" property="positionTitle" jdbcType="VARCHAR" />
+    <result column="COMMENTS" property="comments" jdbcType="VARCHAR" />
+    <result column="LAST_UPDATED_STAMP" property="lastUpdatedStamp" jdbcType="TIMESTAMP" />
+    <result column="LAST_UPDATED_TX_STAMP" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP" />
+    <result column="CREATED_STAMP" property="createdStamp" jdbcType="TIMESTAMP" />
+    <result column="CREATED_TX_STAMP" property="createdTxStamp" jdbcType="TIMESTAMP" />
+  </resultMap>
+</mapper>

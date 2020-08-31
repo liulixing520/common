@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jt.lux.mapper.security.UserLoginMapper" >
+  <resultMap id="BaseResultMap" type="com.jt.lux.entity.security.UserLogin" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="USER_LOGIN_ID" property="userLoginId" jdbcType="VARCHAR" />
+    <result column="CURRENT_PASSWORD" property="currentPassword" jdbcType="VARCHAR" />
+    <result column="PASSWORD_HINT" property="passwordHint" jdbcType="VARCHAR" />
+    <result column="IS_SYSTEM" property="isSystem" jdbcType="CHAR" />
+    <result column="ENABLED" property="enabled" jdbcType="CHAR" />
+    <result column="HAS_LOGGED_OUT" property="hasLoggedOut" jdbcType="CHAR" />
+    <result column="REQUIRE_PASSWORD_CHANGE" property="requirePasswordChange" jdbcType="CHAR" />
+    <result column="LAST_CURRENCY_UOM" property="lastCurrencyUom" jdbcType="VARCHAR" />
+    <result column="LAST_LOCALE" property="lastLocale" jdbcType="VARCHAR" />
+    <result column="LAST_TIME_ZONE" property="lastTimeZone" jdbcType="VARCHAR" />
+    <result column="DISABLED_DATE_TIME" property="disabledDateTime" jdbcType="TIMESTAMP" />
+    <result column="SUCCESSIVE_FAILED_LOGINS" property="successiveFailedLogins" jdbcType="DECIMAL" />
+    <result column="EXTERNAL_AUTH_ID" property="externalAuthId" jdbcType="VARCHAR" />
+    <result column="USER_LDAP_DN" property="userLdapDn" jdbcType="VARCHAR" />
+    <result column="LAST_UPDATED_STAMP" property="lastUpdatedStamp" jdbcType="TIMESTAMP" />
+    <result column="LAST_UPDATED_TX_STAMP" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP" />
+    <result column="CREATED_STAMP" property="createdStamp" jdbcType="TIMESTAMP" />
+    <result column="CREATED_TX_STAMP" property="createdTxStamp" jdbcType="TIMESTAMP" />
+    <result column="PARTY_ID" property="partyId" jdbcType="VARCHAR" />
+    <result column="MOBILE_NUM" property="mobileNum" jdbcType="VARCHAR" />
+    <result column="DOCTOR_TYPE" property="doctorType" jdbcType="VARCHAR" />
+    <result column="EXPERT_PARTY_ID" property="expertPartyId" jdbcType="VARCHAR" />
+    <result column="WORK_GROUP_ID" property="workGroupId" jdbcType="VARCHAR" />
+  </resultMap>
+</mapper>

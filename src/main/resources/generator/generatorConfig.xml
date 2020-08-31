@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!--
+      使用 mybatis generator 生成工具生成基础代码几步：
+      1. 配置好application.properties 文件中的数据库连接
+      2. 引入到当前 generator配置文件 <properties resource="application.properties"/>
+         并引用对应的数据库连接属性
+      3.配置生成对应实体、mapper、sqlMapper.xml 对应位置
+      4 创建一个接口：public interface MyMapper<T> extends Mapper<T>, MySqlMapper<T>{}
+       .并配置mybatis 基础功能的插件MapperPlugin
+      使用maven命令mybatis-generator:generate 执行，生成对应实体、mapper、sqlMapper.xml
+     -->
+    <!--<properties resource="application.properties"/>-->
+    <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <property name="mergeable" value="false"/>
+
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <!-- 配置所有mapper 继承這个公共mapper，以此来使用mapper 基础增删改查API -->
+            <property name="mappers" value="com.jt.lux.util.MyMapper"/>
+        </plugin>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/test?characterEncoding=utf-8"
+                        userId="root"
+                        password="jiangtai">
+        </jdbcConnection>
+
+        <!-- 自动生成实体类配置 -->
+        <javaModelGenerator targetPackage="com.jt.lux.entity.security" targetProject="src/main/java"/>
+
+        <!-- 自动生成xml sql 配置文件配置 -->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
+
+        <!-- 自定生成mapper 接口配置 -->
+        <javaClientGenerator targetPackage="com.jt.lux.mapper.security" targetProject="src/main/java"
+                             type="XMLMAPPER"/>
+
+        <table tableName="party">
+            <!--mysql 配置-->
+            <generatedKey column="PARTY_ID" sqlStatement="Mysql" identity="true"  />
+            <!--oracle 配置-->
+            <!--<generatedKey column="id" sqlStatement="select SEQ_{1}.nextval from dual" identity="false" type="pre"/>-->
+        </table>
+    </context>
+</generatorConfiguration>
