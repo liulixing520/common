@@ -8,9 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * @描述：用户登录
- * @作者： lxf
+ * @作者：
  * @创建日期： 2018-7-25 14:39
- * @版权： 江泰保险经纪股份有限公司
+ * @版权：
  */
 @Api(value = "登录", tags = {"Login-API"},description = "登录接口")
 @RestController

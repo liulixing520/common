@@ -29,38 +29,6 @@ public class GenericDataResponse<T> extends GenericResponse {
 		return ResponseEntity.ok(resp);
 	}
 
-	/**
-	 *  重载方法
-	 * @author lipengchao
-	 * @date 2019/6/13 16:46
-	 * @param noDataMsg 当data为空时提示信息
-	 * @return
-	 **/
-	public static <T> ResponseEntity<GenericDataResponse<T>> okWithData(T data, String noDataMsg) {
-		GenericDataResponse<T> resp = new GenericDataResponse<T>();
-		resp.setCode(GenericResponse.CODE_OK);
-		resp.setData(data);
-		if (data==null){
-			resp.setMsg(noDataMsg);
-		}
-		return ResponseEntity.ok(resp);
-	}
-
-	/**
-	 *  重载方法
-	 * @author lyk
-	 * @date 2019/6/13 16:46
-	 * @param noDataMsg
-	 * @return
-	 **/
-	public static <T> ResponseEntity<GenericDataResponse<T>> okWithData(String noDataMsg , T data) {
-		GenericDataResponse<T> resp = new GenericDataResponse<T>();
-		resp.setCode(GenericResponse.CODE_OK);
-		resp.setData(data);
-		resp.setMsg(noDataMsg);
-		return ResponseEntity.ok(resp);
-	}
-
 	public static <T> ResponseEntity<GenericDataResponse<T>> errorWithMsg(String msg) {
 		GenericDataResponse<T> resp = new GenericDataResponse<T>();
 		resp.setCode(GenericResponse.CODE_NG);

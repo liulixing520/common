@@ -25,11 +25,11 @@ import javax.validation.ConstraintViolationException;
 /**
  * 描述：统一异常处理类
  * 类名称：GlobalDefultExceptionHandler.java
- * 作者： wangyang
+ * 作者：
  * 版本：1.0
  * 修改： 2019/7/19 15:15
  * 创建日期： 2018/7/23 15:15
- * 版权：江泰保险经纪股份有限公司
+ * 版权：
  */
 @Slf4j
 @ControllerAdvice

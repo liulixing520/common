@@ -22,11 +22,6 @@ public class GenericResponse {
 	/** 异常态码，9999 */
 	public static final String CODE_NG = "9999";
 
-	/**重复提交异常码，400*/
-	public static final String RESUBMIT_NG = "400";
-
-	/**密码过期异常码，9001*/
-	public static final String PWEXPIRED_NG = "9001";
 
 	@ApiModelProperty(name = "code", value = "响应码", required=true, position=0)
 	@JsonProperty("code")
@@ -67,16 +62,5 @@ public class GenericResponse {
 		return ResponseEntity.ok(resp);
 	}
 
-	public static final ResponseEntity<?> reSubmitNg(String msg) {
-		GenericResponse resp = new GenericResponse(RESUBMIT_NG);
-		resp.setMsg(msg);
-		return ResponseEntity.ok(resp);
-	}
 
-	public static final ResponseEntity<?> pwExpiredNg(String msg) {
-		GenericResponse resp = new GenericResponse(PWEXPIRED_NG);
-		resp.setMsg(msg);
-		return ResponseEntity.ok(resp);
-	}
-	
 }

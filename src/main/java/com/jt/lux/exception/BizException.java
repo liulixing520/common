@@ -5,7 +5,7 @@ package com.jt.lux.exception;
 * 类名称：BizException.java
 * 版本：1.0
 * 创建日期： 2018/8/3 9:28
-* 版权：江泰保险经纪股份有限公司
+* 版权：
 */
 public class BizException extends RuntimeException {
     public BizException(String message, Throwable cause) {

@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * @描述： 解决跨域问题
  * @作者： lux
  * @创建日期： 2018-8-10 17:55
- * @版权： 江泰保险经纪股份有限公司
+ * @版权：
  */
 @Configuration
 public class CorsConfig extends WebMvcConfigurerAdapter {
