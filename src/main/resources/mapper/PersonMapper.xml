@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jt.lux.mapper.security.PersonMapper" >
+  <resultMap id="BaseResultMap" type="com.jt.lux.entity.security.Person" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="PARTY_ID" property="partyId" jdbcType="VARCHAR" />
+    <result column="SALUTATION" property="salutation" jdbcType="VARCHAR" />
+    <result column="FIRST_NAME" property="firstName" jdbcType="VARCHAR" />
+    <result column="MIDDLE_NAME" property="middleName" jdbcType="VARCHAR" />
+    <result column="LAST_NAME" property="lastName" jdbcType="VARCHAR" />
+    <result column="PERSONAL_TITLE" property="personalTitle" jdbcType="VARCHAR" />
+    <result column="SUFFIX" property="suffix" jdbcType="VARCHAR" />
+    <result column="NICKNAME" property="nickname" jdbcType="VARCHAR" />
+    <result column="FIRST_NAME_LOCAL" property="firstNameLocal" jdbcType="VARCHAR" />
+    <result column="MIDDLE_NAME_LOCAL" property="middleNameLocal" jdbcType="VARCHAR" />
+    <result column="LAST_NAME_LOCAL" property="lastNameLocal" jdbcType="VARCHAR" />
+    <result column="OTHER_LOCAL" property="otherLocal" jdbcType="VARCHAR" />
+    <result column="MEMBER_ID" property="memberId" jdbcType="VARCHAR" />
+    <result column="GENDER" property="gender" jdbcType="CHAR" />
+    <result column="BIRTH_DATE" property="birthDate" jdbcType="DATE" />
+    <result column="DECEASED_DATE" property="deceasedDate" jdbcType="DATE" />
+    <result column="HEIGHT" property="height" jdbcType="DOUBLE" />
+    <result column="WEIGHT" property="weight" jdbcType="DOUBLE" />
+    <result column="MOTHERS_MAIDEN_NAME" property="mothersMaidenName" jdbcType="VARCHAR" />
+    <result column="MARITAL_STATUS" property="maritalStatus" jdbcType="CHAR" />
+    <result column="SOCIAL_SECURITY_NUMBER" property="socialSecurityNumber" jdbcType="VARCHAR" />
+    <result column="PASSPORT_NUMBER" property="passportNumber" jdbcType="VARCHAR" />
+    <result column="PASSPORT_EXPIRE_DATE" property="passportExpireDate" jdbcType="DATE" />
+    <result column="TOTAL_YEARS_WORK_EXPERIENCE" property="totalYearsWorkExperience" jdbcType="DOUBLE" />
+    <result column="COMMENTS" property="comments" jdbcType="VARCHAR" />
+    <result column="EMPLOYMENT_STATUS_ENUM_ID" property="employmentStatusEnumId" jdbcType="VARCHAR" />
+    <result column="RESIDENCE_STATUS_ENUM_ID" property="residenceStatusEnumId" jdbcType="VARCHAR" />
+    <result column="OCCUPATION" property="occupation" jdbcType="VARCHAR" />
+    <result column="YEARS_WITH_EMPLOYER" property="yearsWithEmployer" jdbcType="DECIMAL" />
+    <result column="MONTHS_WITH_EMPLOYER" property="monthsWithEmployer" jdbcType="DECIMAL" />
+    <result column="EXISTING_CUSTOMER" property="existingCustomer" jdbcType="CHAR" />
+    <result column="CARD_ID" property="cardId" jdbcType="VARCHAR" />
+    <result column="LAST_UPDATED_STAMP" property="lastUpdatedStamp" jdbcType="TIMESTAMP" />
+    <result column="LAST_UPDATED_TX_STAMP" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP" />
+    <result column="CREATED_STAMP" property="createdStamp" jdbcType="TIMESTAMP" />
+    <result column="CREATED_TX_STAMP" property="createdTxStamp" jdbcType="TIMESTAMP" />
+    <result column="PERSON_SORT_NUM" property="personSortNum" jdbcType="DECIMAL" />
+    <result column="PERSON_SORT_DEPART_ID" property="personSortDepartId" jdbcType="VARCHAR" />
+    <result column="UFM_FILE_PATH" property="ufmFilePath" jdbcType="VARCHAR" />
+    <result column="MOBILE_NUM" property="mobileNum" jdbcType="VARCHAR" />
+    <result column="TELECOM_NUM" property="telecomNum" jdbcType="VARCHAR" />
+    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+    <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+    <result column="HEAD_PIC_URL" property="headPicUrl" jdbcType="VARCHAR" />
+    <result column="PROFESSION" property="profession" jdbcType="VARCHAR" />
+    <result column="MARRIAGE" property="marriage" jdbcType="VARCHAR" />
+    <result column="NATION" property="nation" jdbcType="VARCHAR" />
+    <result column="OTHER_MARRIAGE_DESC" property="otherMarriageDesc" jdbcType="VARCHAR" />
+  </resultMap>
+</mapper>

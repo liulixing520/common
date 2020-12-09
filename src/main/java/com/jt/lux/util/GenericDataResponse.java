@@ -17,7 +17,10 @@ import org.springframework.http.ResponseEntity;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GenericDataResponse<T> extends GenericResponse {
-	
+
+	/**
+	 * 数据对象
+	 */
 	@ApiModelProperty(name = "data", value = "数据对象", position=3)
 	@JsonProperty("data")
 	private T data;

@@ -42,7 +42,7 @@
         <javaClientGenerator targetPackage="com.jt.lux.mapper.security" targetProject="src/main/java"
                              type="XMLMAPPER"/>
 
-        <table tableName="party">
+        <table tableName="person">
             <!--mysql 配置-->
             <generatedKey column="PARTY_ID" sqlStatement="Mysql" identity="true"  />
             <!--oracle 配置-->

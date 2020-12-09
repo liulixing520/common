@@ -27,6 +27,16 @@ spring:
             connection-test-query: select 1
             username: root
             password: jiangtai
+    redis:
+        host: 172.24.128.5
+        port: 6379
+        timeout: 3000
+        pool:
+            max-idle: 10
+            max-wait: 10000
+        max-active: 20
+        maxTotal: 20
+        password: crs-95idx3hg:JTdevTEST(!13)8E
     data:
         elasticsearch:
             cluster-name:
@@ -35,6 +45,7 @@ spring:
                 path:
                     logs: target/elasticsearch/log
                     data: target/elasticsearch/data
+        throw-exception-if-no-handler-found: true
     mvc:
         static-path-pattern: /**
     resources:
@@ -48,6 +59,8 @@ spring:
         enabled: always
     session:
       store-type: none
+    thymeleaf:
+      cache: false
 management:
     security:
         enabled: false
@@ -59,8 +72,8 @@ mybatis:
     mapper-locations: classpath:mapper/*.xml
 eureka:
     client:
-        registerWithEureka: true
-        fetchRegistry: true
+        registerWithEureka: false
+        fetchRegistry: false
         serviceUrl:
             defaultZone: http://10.10.32.54:8761/eureka
     instance:

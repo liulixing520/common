@@ -13,7 +13,7 @@ public class Party {
     private String partyId;
 
     /**
-     * 当事人类型
+     * 当事人类型   PERSON:个人
      */
     @Column(name = "PARTY_TYPE_ID")
     private String partyTypeId;

@@ -1,13 +1,6 @@
 package com.jt.lux.exception;
 
-/**
-* 描述：参数校验异常
 
-* 版本：1.0
-* 修改： 2018/8/3 18:54
-* 创建日期： 2018/8/3 18:54
-* 版权：
-*/
 public class ParamException extends RuntimeException  {
     public ParamException(String message, Throwable cause) {
         super(message,cause);

@@ -1,5 +1,9 @@
 package com.jt.lux.entity.security;
 
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.*;
@@ -20,12 +24,21 @@ public class UserLogin {
     /**
      * 登录密码
      */
+    @JsonIgnore
     @Column(name = "CURRENT_PASSWORD")
     private String currentPassword;
 
     /**
+     * 加盐
+     */
+    @JsonIgnore
+    @Column(name = "SALT")
+    private String salt;
+
+    /**
      * 密码提示
      */
+    @JsonIgnore
     @Column(name = "PASSWORD_HINT")
     private String passwordHint;
 
@@ -88,6 +101,16 @@ public class UserLogin {
 
     @Column(name = "WORK_GROUP_ID")
     private String workGroupId;
+
+
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
 
     /**
      * 获取登录账户id

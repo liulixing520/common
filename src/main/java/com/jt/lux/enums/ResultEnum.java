@@ -2,7 +2,6 @@ package com.jt.lux.enums;
 
 /**
  * 
- * @author 可达鸭
  * 描述: 状态码和简单描述枚举
  * @date 2018年1月15日 上午10:40:25
  */
@@ -53,14 +52,7 @@ public enum ResultEnum implements BaseEnum{
 	 * 服务器异常
 	 */
     SERVER_ERROR("500","服务器异常"),
-    /**
-	 * 参数为空
-	 */
-    PARAMETER_IS_NULL("1","参数为空"),
-    /**
-	 * 数据存储失败
-	 */
-    SAVE_FAILED("2","数据存储失败"),
+
     /**
 	 * 数据修改失败
 	 */
@@ -87,26 +79,6 @@ public enum ResultEnum implements BaseEnum{
      */
     USER_TYPE_REQUIRED("3006","userType必填！"),
     /**
-	 * 没有满足条件的数据
-	 */
-    NO_DATA("6","没有满足条件的数据"),
-    /**
-	 * 参数为空
-	 */
-    PARAMETER_IS_EXIST("7","参数已存在"),
-    /**
-	 * 上传文件为空
-	 */
-    FILE_IS_NULL("8","上传文件为空"),
-    /**
-	 * 文件上传失败
-	 */
-    FILE_UP_FAILED("9","文件上传失败"),
-    /**
-     * 文件上传失败
-     */
-    DELETE_FAILED("10","删除失败"),
-    /**
      * 没有操作权限
      */
     ROLE_ERROR("3007","没有操作权限"),
@@ -119,7 +91,7 @@ public enum ResultEnum implements BaseEnum{
 
     PHONENUM_CHANGE_FAILED("3010", "手机号修改失败");
     ;
-	
+
     private String code;
 
     private String message;

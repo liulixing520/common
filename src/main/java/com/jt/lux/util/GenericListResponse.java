@@ -17,9 +17,15 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GenericListResponse<T> extends GenericResponse {
 
+	/**
+	 * 总条数
+	 */
 	@JsonProperty("total")
 	private long total;
 
+	/**
+	 * 数据集合
+	 */
 	@JsonProperty("list")
 	private List<T> list;
 
@@ -69,19 +75,5 @@ public class GenericListResponse<T> extends GenericResponse {
 		return ResponseEntity.ok(resp);
 	}
 
-	/**
-	 *
-	 * @param msg 当arr为空时提示的信息
-	 * @param arr
-	 * @param tc
-	 * @param <T>
-	 * @return
-	 */
-	public static <T> ResponseEntity<GenericListResponse<T>> listAndCount(String msg, List<T> arr, Long tc) {
-		if (arr==null||arr.size()<1){
-			return listNoCount(msg,arr);
-		}else {
-			return listAndCount(arr,tc);
-		}
-	}
+
 }

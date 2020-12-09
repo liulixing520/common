@@ -16,7 +16,7 @@ import java.io.PrintWriter;
 @Slf4j
 @WebFilter(
         filterName = "xssFilter",
-        urlPatterns = "/*",
+        urlPatterns = "/api/*",
         dispatcherTypes = DispatcherType.REQUEST
 )
 public class XssFilter implements Filter {

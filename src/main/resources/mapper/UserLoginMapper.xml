@@ -7,6 +7,7 @@
     -->
     <id column="USER_LOGIN_ID" property="userLoginId" jdbcType="VARCHAR" />
     <result column="CURRENT_PASSWORD" property="currentPassword" jdbcType="VARCHAR" />
+    <result column="SALT" property="salt" jdbcType="VARCHAR" />
     <result column="PASSWORD_HINT" property="passwordHint" jdbcType="VARCHAR" />
     <result column="IS_SYSTEM" property="isSystem" jdbcType="CHAR" />
     <result column="ENABLED" property="enabled" jdbcType="CHAR" />

@@ -19,6 +19,11 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Edgware.SR4</spring-cloud.version>
+
+		<asciidoctor.input.directory>${project.basedir}/src/docs/asciidoc</asciidoctor.input.directory>
+		<generated.asciidoc.directory>${project.build.directory}/asciidoc/generated</generated.asciidoc.directory>
+		<asciidoctor.html.output.directory>${project.build.directory}/asciidoc/html</asciidoctor.html.output.directory>
+		<asciidoctor.pdf.output.directory>${project.build.directory}/asciidoc/pdf</asciidoctor.pdf.output.directory>
 	</properties>
 
 	<dependencies>
@@ -242,7 +247,12 @@
 			<artifactId>spring-session</artifactId>
 			<version>1.3.1.RELEASE</version>
 		</dependency>
-
+		<!--smartdoc-->
+		<dependency>
+			<groupId>com.github.shalousun</groupId>
+			<artifactId>smart-doc</artifactId>
+			<version>RELEASE</version>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -317,6 +327,55 @@
 						<version>3.4.0</version>
 					</dependency>
 				</dependencies>
+			</plugin>
+
+			<plugin>
+				<groupId>org.asciidoctor</groupId>
+				<artifactId>asciidoctor-maven-plugin</artifactId>
+				<version>1.6.0</version>
+				<!-- Include Asciidoctor PDF for pdf generation -->
+				<dependencies>
+					<dependency>
+						<groupId>org.asciidoctor</groupId>
+						<artifactId>asciidoctorj-pdf</artifactId>
+						<version>1.5.0-beta.5</version>
+					</dependency>
+					<dependency>
+						<groupId>org.jruby</groupId>
+						<artifactId>jruby-complete</artifactId>
+						<version>9.2.8.0</version>
+					</dependency>
+				</dependencies>
+				<!-- Configure generic document generation settings -->
+				<configuration>
+					<sourceDirectory>${asciidoctor.input.directory}</sourceDirectory>
+					<sourceDocumentName>index.adoc</sourceDocumentName>
+					<attributes>
+						<doctype>book</doctype>
+						<toc>left</toc>
+						<toclevels>3</toclevels>
+						<numbered></numbered>
+						<hardbreaks></hardbreaks>
+						<sectlinks></sectlinks>
+						<sectanchors></sectanchors>
+						<generated>${generated.asciidoc.directory}</generated>
+					</attributes>
+				</configuration>
+				<!-- Since each execution can only handle one backend, run
+                     separate executions for each desired output type -->
+				<executions>
+					<execution>
+						<id>output-html</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>process-asciidoc</goal>
+						</goals>
+						<configuration>
+							<backend>html5</backend>
+							<outputDirectory>${asciidoctor.html.output.directory}</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

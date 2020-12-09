@@ -23,10 +23,16 @@ public class GenericResponse {
 	public static final String CODE_NG = "9999";
 
 
+	/**
+	 * 响应码
+	 */
 	@ApiModelProperty(name = "code", value = "响应码", required=true, position=0)
 	@JsonProperty("code")
 	private String code;
-	
+
+	/**
+	 * 提示消息
+	 */
 	@ApiModelProperty(name = "msg", value = "提示消息", position=1)
 	@JsonProperty("msg")
 	private String msg;
@@ -62,5 +68,8 @@ public class GenericResponse {
 		return ResponseEntity.ok(resp);
 	}
 
-
+	public static final ResponseEntity<?> ng(String code,String msg) {
+		GenericResponse resp = new GenericResponse(code,msg);
+		return ResponseEntity.ok(resp);
+	}
 }
