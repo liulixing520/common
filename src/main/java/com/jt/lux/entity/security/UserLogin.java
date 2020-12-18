@@ -3,6 +3,10 @@ package com.jt.lux.entity.security;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -11,6 +15,10 @@ import javax.persistence.*;
 /**
  * 登录账户
  */
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "user_login")
 public class UserLogin {
     /**
@@ -41,6 +49,10 @@ public class UserLogin {
     @JsonIgnore
     @Column(name = "PASSWORD_HINT")
     private String passwordHint;
+
+    @Column(name = "OPEN_ID")
+    private String openid;
+
 
     @Column(name = "IS_SYSTEM")
     private String isSystem;

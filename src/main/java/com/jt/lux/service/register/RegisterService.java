@@ -75,49 +75,52 @@ public class RegisterService {
             userLogin = new UserLogin();
         }
 
-        String password = "";
-        if(StringUtils.isEmpty(vo.getPassWord())){
-            password = vo.getPassWord();
-        }
-        Encryption en = new Encryption();
-        String salt = en.createSalt();
-        password = new SimpleHash("MD5", password, salt, 1024).toString();
-
         Person person = new Person();
         person.setMobileNum(vo.getPhoneNum());
 
-        person = createPerson(person);
+        createPerson(person);
 
-        userLogin.setSalt(salt);
-        userLogin.setCurrentPassword(password);
         userLogin.setPartyId(person.getPartyId());
+        createUserLogin(userLogin);
 
         return GenericDataResponse.okWithData(userLogin);
     }
 
+    public UserLogin createUserLogin(UserLogin userLogin){
+        String password = "";
+        if(StringUtils.isNotBlank(userLogin.getCurrentPassword())){
+            password = userLogin.getCurrentPassword();
+            String salt = new Encryption().createSalt();
+            String encryPassword = new SimpleHash("MD5", password, salt, 1024).toString();
+            userLogin.setSalt(salt);
+            userLogin.setCurrentPassword(encryPassword);
+        }
+        userLogin.setUserLoginId("u"+idg.nextId());
+        int n = userLoginMapper.insert(userLogin);
+        if(n == 0 ){
+            log.error("注册UserLogin失败{}",userLogin.getPartyId());
+            throw new ServiceException("注册失败");
+        }
+        return userLogin;
+    }
+
     public Person createPerson(Person person){
-        if(StringUtils.isBlank(person.getMobileNum())){
-            throw new ServiceException("手机号不存在");
-        }
-
-        Person t = new Person();
-        t.setMobileNum(person.getMobileNum());
-        if(personMapper.select(t).size()>0){
-            throw new ServiceException("手机号已被占用，无法创建: "+person.getMobileNum());
-        }
-
 
         Party party = new Party();
         party.setPartyTypeId("PERSON");
         party.setStatusId("PARTY_ENABLED");
         int n = partyMapper.insertParty(party);
         if(n == 0 ){
-            throw new ServiceException("party插入失败");
+            log.error("注册party失败{}",party.getPartyId());
+            throw new ServiceException("注册失败");
         }
 
         person.setPartyId(party.getPartyId());
-        personMapper.insert(person);
-
+        n = personMapper.insert(person);
+        if(n == 0 ){
+            log.error("注册person失败{}",person.getPartyId());
+            throw new ServiceException("注册失败");
+        }
         return person;
     }
 

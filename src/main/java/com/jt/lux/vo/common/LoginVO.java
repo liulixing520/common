@@ -18,9 +18,9 @@ public class LoginVO {
     @ApiModelProperty("用户密码")
     private String password;
     /**
-     * 登录类型 0-普通登录， 1-手机验证码登录
+     * 登录类型 0-普通登录， 1-手机验证码登录，  2-微信授权登录
      */
-    @ApiModelProperty("登录类型 0-普通登录， 1-手机验证码登录")
+    @ApiModelProperty("登录类型 0-普通登录， 1-手机验证码登录， 2-微信授权登录")
     private String loginType;
 
     /**
