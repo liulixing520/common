@@ -9,7 +9,7 @@ server:
         accessLog:
             enabled: true
             pattern: "%t %a \"%r\" %s (%D ms)"
-            dir: /lux/logs/${spring.application.name}
+            dir: /var/lux/logs/${spring.application.name}
 ribbon:
   ReadTimeout: 60000
   ConnectTimeout: 60000
@@ -28,7 +28,7 @@ spring:
             username: root
             password: jiangtai
     redis:
-        host: 172.24.128.5
+        host: 127.0.0.1
         port: 6379
         timeout: 3000
         pool:
@@ -36,7 +36,7 @@ spring:
             max-wait: 10000
         max-active: 20
         maxTotal: 20
-        password: crs-95idx3hg:JTdevTEST(!13)8E
+#        password: crs-95idx3hg:JTdevTEST(!13)8E
     data:
         elasticsearch:
             cluster-name:
@@ -104,6 +104,14 @@ jtpf:
         name: common
         level: DEBUG
         pattern: "%red(%d) %highlight(%level) %green([%thread]) %boldMagenta(%logger{48}): %msg%n"
-        dir: /lux/logs/${spring.application.name}
+        dir: /var/lux/logs/${spring.application.name}
         logstash:
             destinations: "172.16.4.147:35610"
+    wx:
+        jscode2session: https://api.weixin.qq.com/sns/jscode2session
+        APPID: wx18e2f7868d2a3949
+        SECRET: 3e3d0f2b66a6d27b9a8295eccdaf770b
+        token: xingshhwx90503991
+        gettokenurl: https://api.weixin.qq.com/sns/oauth2/access_token
+        getAccessTokenUrl: https://api.weixin.qq.com/cgi-bin/token
+        getticket: https://api.weixin.qq.com/cgi-bin/ticket/getticket

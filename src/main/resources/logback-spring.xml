@@ -3,7 +3,7 @@
 <configuration scan="true">
 	<!--include resource="org/springframework/boot/logging/logback/base.xml" /-->
 	<springProperty scope="context" name="APP_NAME" source="spring.application.name" defaultValue="common" />
-	<springProperty scope="context" name="LOG_DIR" source="jtpf.logging.dir" defaultValue="/lux/logs/common" />
+	<springProperty scope="context" name="LOG_DIR" source="jtpf.logging.dir" defaultValue="/var/lux/logs/common" />
 	<springProperty scope="context" name="LOGGER_NAME" source="jtpf.logging.name" defaultValue="common"/>
 	<springProperty scope="context" name="LOG_LEVEL" source="jtpf.logging.level" defaultValue="INFO"/>
 	<springProperty scope="context" name="LOG_PATTERN" source="jtpf.logging.pattern" defaultValue="%red(%d) %highlight(%level) %green([%thread]) %boldMagenta(%logger{48}): %msg%n" />

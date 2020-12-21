@@ -4,36 +4,23 @@ import com.alibaba.fastjson.JSONObject;
 import com.jt.lux.entity.security.Party;
 import com.jt.lux.entity.security.Person;
 import com.jt.lux.entity.security.UserLogin;
-import com.jt.lux.exception.BizException;
-import com.jt.lux.exception.ParamException;
-import com.jt.lux.exception.PassWordExpiredException;
 import com.jt.lux.exception.ServiceException;
 import com.jt.lux.mapper.security.PartyMapper;
 import com.jt.lux.mapper.security.PersonMapper;
 import com.jt.lux.mapper.security.UserLoginMapper;
-import com.jt.lux.util.Constants;
 import com.jt.lux.util.Encryption;
 import com.jt.lux.util.GenericDataResponse;
 import com.jt.lux.util.IdGenerator;
-import com.jt.lux.vo.common.LoginVO;
 import com.jt.lux.vo.common.RegisterVO;
 import org.apache.commons.lang.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.ExcessiveAttemptsException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.SimpleHash;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import tk.mybatis.mapper.util.StringUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 
 /**
  * @描述： 注册
@@ -67,35 +54,36 @@ public class RegisterService {
      */
     public ResponseEntity<GenericDataResponse<UserLogin>> register(RegisterVO vo, HttpServletRequest request){
         log.info("register:{}", JSONObject.toJSON(vo).toString());
-        UserLogin userLogin = userLoginMapper.selectByPrimaryKey(vo.getPhoneNum());
-        if (null != userLogin){
-            log.error(Constants.PHONENUM_ISEXIST,vo.getPhoneNum());
-            throw new ServiceException(Constants.PHONENUM_ISEXIST);
-        }else {
-            userLogin = new UserLogin();
-        }
-
+        UserLogin userLogin = new UserLogin();
         Person person = new Person();
-        person.setMobileNum(vo.getPhoneNum());
-
+        if(StringUtils.isNotBlank(vo.getPhoneNum())){
+            person.setMobileNum(vo.getPhoneNum());
+        }
+        //创建person用户
         createPerson(person);
 
+        if(StringUtils.isNotBlank(vo.getOpenid())){
+            userLogin.setOpenid(vo.getPhoneNum());
+        }
+        if(StringUtils.isNotBlank(vo.getPassWord())){
+            userLogin.setCurrentPassword(vo.getPassWord());
+        }
         userLogin.setPartyId(person.getPartyId());
+        //创建登陆账户
         createUserLogin(userLogin);
 
         return GenericDataResponse.okWithData(userLogin);
     }
 
     public UserLogin createUserLogin(UserLogin userLogin){
-        String password = "";
-        if(StringUtils.isNotBlank(userLogin.getCurrentPassword())){
-            password = userLogin.getCurrentPassword();
+        String password = userLogin.getCurrentPassword();
+        if(StringUtils.isNotBlank(password)){
             String salt = new Encryption().createSalt();
             String encryPassword = new SimpleHash("MD5", password, salt, 1024).toString();
             userLogin.setSalt(salt);
             userLogin.setCurrentPassword(encryPassword);
         }
-        userLogin.setUserLoginId("u"+idg.nextId());
+        userLogin.setUserLoginId("U"+idg.nextId());
         int n = userLoginMapper.insert(userLogin);
         if(n == 0 ){
             log.error("注册UserLogin失败{}",userLogin.getPartyId());

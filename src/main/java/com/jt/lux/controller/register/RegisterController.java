@@ -1,10 +1,14 @@
 package com.jt.lux.controller.register;
 
 import com.jt.lux.entity.security.UserLogin;
+import com.jt.lux.exception.ServiceException;
+import com.jt.lux.mapper.security.UserLoginMapper;
 import com.jt.lux.service.register.RegisterService;
+import com.jt.lux.util.Constants;
 import com.jt.lux.util.GenericDataResponse;
-import com.jt.lux.vo.common.LoginVO;
 import com.jt.lux.vo.common.RegisterVO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,15 +30,24 @@ import javax.validation.Valid;
 @RequestMapping("/api")
 public class RegisterController {
 
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private RegisterService registerService;
+    @Autowired
+    private UserLoginMapper userLoginMapper;
+
 
     /**
      * 用户注册
      */
     @PostMapping(value = "/v1/register", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public ResponseEntity<GenericDataResponse<UserLogin>> register(@Valid @RequestBody RegisterVO loginVO, HttpServletRequest request) {
-
+        UserLogin userLogin = userLoginMapper.selectOne(UserLogin.builder().mobileNum(loginVO.getPhoneNum()).build());
+        if (null != userLogin){
+            log.error(Constants.PHONENUM_ISEXIST,loginVO.getPhoneNum());
+            throw new ServiceException(Constants.PHONENUM_ISEXIST);
+        }
         return registerService.register(loginVO,request);
     }
 

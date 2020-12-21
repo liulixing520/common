@@ -64,8 +64,8 @@ public class CommonApplicationTests {
 
 		//设置文档变更记录，没有需要可以不设置
 		config.setRevisionLogs(
-				RevisionLog.getLog().setRevisionTime("2018/12/15").setAuthor("chen").setRemarks("test").setStatus("create").setVersion("V1.0"),
-				RevisionLog.getLog().setRevisionTime("2018/12/16").setAuthor("chen2").setRemarks("test2").setStatus("update").setVersion("V2.0")
+				RevisionLog.builder().setRevisionTime("2018/12/15").setAuthor("chen").setRemarks("test").setStatus("create").setVersion("V1.0"),
+				RevisionLog.builder().setRevisionTime("2018/12/16").setAuthor("chen2").setRemarks("test2").setStatus("update").setVersion("V2.0")
 		);
 
 		//since 1.7.5
@@ -122,8 +122,8 @@ public class CommonApplicationTests {
 
 		//设置文档变更记录，没有需要可以不设置
 		config.setRevisionLogs(
-				RevisionLog.getLog().setRevisionTime("2018/12/15").setAuthor("chen").setRemarks("test").setStatus("create").setVersion("V1.0"),
-				RevisionLog.getLog().setRevisionTime("2018/12/16").setAuthor("chen2").setRemarks("test2").setStatus("update").setVersion("V2.0")
+				RevisionLog.builder().setRevisionTime("2018/12/15").setAuthor("chen").setRemarks("test").setStatus("create").setVersion("V1.0"),
+				RevisionLog.builder().setRevisionTime("2018/12/16").setAuthor("chen2").setRemarks("test2").setStatus("update").setVersion("V2.0")
 		);
 
 		//since 1.7.5

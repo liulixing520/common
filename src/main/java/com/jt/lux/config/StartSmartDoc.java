@@ -4,11 +4,13 @@ import com.jt.lux.enums.ResultEnum;
 import com.power.common.util.DateTimeUtil;
 import com.power.doc.builder.HtmlApiDocBuilder;
 import com.power.doc.constants.DocGlobalConstants;
-import com.power.doc.model.*;
+import com.power.doc.model.ApiConfig;
+import com.power.doc.model.ApiErrorCode;
+import com.power.doc.model.ApiReqHeader;
+import com.power.doc.model.RevisionLog;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,8 +63,8 @@ public class StartSmartDoc implements CommandLineRunner {
 
         //设置文档变更记录，没有需要可以不设置
         config.setRevisionLogs(
-                RevisionLog.getLog().setRevisionTime("2018/12/15").setAuthor("chen").setRemarks("test").setStatus("create").setVersion("V1.0"),
-                RevisionLog.getLog().setRevisionTime("2018/12/16").setAuthor("chen2").setRemarks("test2").setStatus("update").setVersion("V2.0")
+                RevisionLog.builder().setRevisionTime("2018/12/15").setAuthor("chen").setRemarks("test").setStatus("create").setVersion("V1.0"),
+                RevisionLog.builder().setRevisionTime("2018/12/16").setAuthor("chen2").setRemarks("test2").setStatus("update").setVersion("V2.0")
         );
 
         //since 1.7.5
