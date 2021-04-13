@@ -1,6 +1,9 @@
 package com.jt.lux.entity.security;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -9,6 +12,10 @@ import javax.persistence.*;
 /**
  * 会员
  */
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Person {
     @Id
     @Column(name = "PARTY_ID")
@@ -47,6 +54,9 @@ public class Person {
 
     @Column(name = "SUFFIX")
     private String suffix;
+
+    @Column(name = "OPEN_ID")
+    private String openId;
 
     /**
      * 昵称

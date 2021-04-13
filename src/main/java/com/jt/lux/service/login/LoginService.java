@@ -74,11 +74,6 @@ public class LoginService {
             return userLogin(vo.getPhoneNum(),vo.getSmsCode());
         }
 
-        if(Constants.LOGIN_TYPE_2.equals(vo.getLoginType())){
-            //TODO 接入第三方登录
-            return null;
-        }
-
         return null;
     }
 

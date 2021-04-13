@@ -2,7 +2,9 @@ package com.jt.lux.service.Wechat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
+import com.jt.lux.entity.security.Person;
 import com.jt.lux.entity.security.UserLogin;
+import com.jt.lux.mapper.security.PersonMapper;
 import com.jt.lux.mapper.security.UserLoginMapper;
 import com.jt.lux.service.register.RegisterService;
 import com.jt.lux.util.GenericDataResponse;
@@ -46,7 +48,7 @@ public class WechatService {
     private RegisterService registerService;
 
     @Autowired
-    private UserLoginMapper userLoginMapper;
+    private PersonMapper personMapper;
 
 
     /**
@@ -105,8 +107,8 @@ public class WechatService {
     }
 
     private void loginOrRegisterByOpenId(String openId) {
-        List<UserLogin> userLoginList = userLoginMapper.select(UserLogin.builder().openid(openId).build());
-        if (userLoginList.size()>0) {
+        List<Person> personList = personMapper.select(Person.builder().openId(openId).build());
+        if (personList.size() == 0) {
             registerService.register(RegisterVO.builder().openid(openId).build(),null);
         }
     }

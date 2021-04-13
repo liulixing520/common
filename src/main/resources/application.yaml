@@ -36,7 +36,7 @@ spring:
             max-wait: 10000
         max-active: 20
         maxTotal: 20
-#        password: crs-95idx3hg:JTdevTEST(!13)8E
+        password: crs-95idx3hg:JTdevTEST(!13)8E
     data:
         elasticsearch:
             cluster-name:
@@ -115,3 +115,4 @@ jtpf:
         gettokenurl: https://api.weixin.qq.com/sns/oauth2/access_token
         getAccessTokenUrl: https://api.weixin.qq.com/cgi-bin/token
         getticket: https://api.weixin.qq.com/cgi-bin/ticket/getticket
+        grantType: getticket

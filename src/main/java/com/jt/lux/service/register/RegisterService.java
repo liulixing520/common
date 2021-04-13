@@ -59,12 +59,14 @@ public class RegisterService {
         if(StringUtils.isNotBlank(vo.getPhoneNum())){
             person.setMobileNum(vo.getPhoneNum());
         }
+        if(StringUtils.isNotBlank(vo.getOpenid())){
+            person.setOpenId(vo.getOpenid());
+        }
+
         //创建person用户
         createPerson(person);
 
-        if(StringUtils.isNotBlank(vo.getOpenid())){
-            userLogin.setOpenid(vo.getPhoneNum());
-        }
+
         if(StringUtils.isNotBlank(vo.getPassWord())){
             userLogin.setCurrentPassword(vo.getPassWord());
         }

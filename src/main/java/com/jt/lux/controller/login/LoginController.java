@@ -3,6 +3,7 @@ package com.jt.lux.controller.login;
 import com.jt.lux.entity.security.UserLogin;
 import com.jt.lux.service.login.LoginService;
 import com.jt.lux.util.GenericDataResponse;
+import com.jt.lux.util.GenericResponse;
 import com.jt.lux.vo.common.LoginVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,4 +48,12 @@ public class LoginController {
         return null;
     }
 
+    /**
+     * getTest
+     * @RequestParam label名称
+     */
+    @PostMapping(value = "/v1/getTest", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public ResponseEntity<GenericDataResponse<String>> getTest(@RequestParam(value = "labelName")String labelName) {
+        return GenericDataResponse.okWithData("ss");
+    }
 }

@@ -50,8 +50,7 @@ public class UserLogin {
     @Column(name = "PASSWORD_HINT")
     private String passwordHint;
 
-    @Column(name = "OPEN_ID")
-    private String openid;
+
 
 
     @Column(name = "IS_SYSTEM")
