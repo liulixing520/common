@@ -75,7 +75,7 @@ public class ShiroConfig {
     @Bean
     public MyShiroRealm myShiroRealm(CredentialsMatcher credentialsMatcher) {
         MyShiroRealm myShiroRealm = new MyShiroRealm();
-        //将自定义的令牌set到了Realm
+        //将自定义的令牌set到了Realm11
         myShiroRealm.setCredentialsMatcher(credentialsMatcher);
         return myShiroRealm;
     }
