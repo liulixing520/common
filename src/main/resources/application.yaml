@@ -103,7 +103,7 @@ aliyun:
         templateCode3: x
     oss:
         endpoint:
-        accessKeyId: x
+        accessKeyId: x1
         accessKeySecret: x
         bucketName: yougufiles
         maxFileSize: 1000  #MB
