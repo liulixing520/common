@@ -26,8 +26,16 @@
     <result column="CREATED_TX_STAMP" property="createdTxStamp" jdbcType="TIMESTAMP" />
     <result column="PARTY_ID" property="partyId" jdbcType="VARCHAR" />
     <result column="MOBILE_NUM" property="mobileNum" jdbcType="VARCHAR" />
-    <result column="DOCTOR_TYPE" property="doctorType" jdbcType="VARCHAR" />
-    <result column="EXPERT_PARTY_ID" property="expertPartyId" jdbcType="VARCHAR" />
-    <result column="WORK_GROUP_ID" property="workGroupId" jdbcType="VARCHAR" />
+    <result column="OPENID" property="openid" jdbcType="VARCHAR" />
+    <result column="STATUS_AUTH" property="statusAuth" jdbcType="VARCHAR" />
   </resultMap>
+
+  <select id="findByMobileNum"  resultMap="BaseResultMap" >
+       select  * from user_login where MOBILE_NUM = #{phoneNum}
+  </select>
+
+  <select id="findByPartyId"  resultMap="BaseResultMap" >
+    select  * from user_login where PARTY_ID = #{partyId}
+  </select>
+
 </mapper>

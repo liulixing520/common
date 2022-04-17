@@ -1,6 +1,11 @@
-package com.jt.lux.intercepter;
+package com.jt.lux.aop;
 
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jt.lux.annotations.ReSubmit;
+import com.jt.lux.config.AuthProperties;
+import com.jt.lux.service.redis.RedisLockService;
+import com.jt.lux.util.GenericResponse;
 import org.apache.ibatis.reflection.ArrayUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -10,6 +15,8 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -17,20 +24,39 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import tk.mybatis.mapper.util.StringUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
-import java.util.Base64;
-import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Aspect
 @Component
+@Order(2)
 public class HttpAspect {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(HttpAspect.class);
+
+
+    private static final long TIME = 10 * 1000;
+
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    RedisLockService redisLockService;
+
+
+    private final String userPrefix = "USER:RESUB-TOKEN:";
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
+    private AuthProperties authConf;
 
 
     @Pointcut("execution(public * com.jt.lux.controller.*.*.*(..))")
@@ -38,13 +64,14 @@ public class HttpAspect {
 
     }
 
+
     @Before("log()")
     public void doBefore(JoinPoint joinPoint){
         try {
-            // æ¥æ”¶åˆ°è¯·æ±‚ï¼Œè®°å½•è¯·æ±‚å†…å®¹
+            // ½ÓÊÕµ½ÇëÇó£¬¼ÇÂ¼ÇëÇóÄÚÈİ
             ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = attributes.getRequest();
-            // è®°å½•ä¸‹è¯·æ±‚å†…å®¹
+            // ¼ÇÂ¼ÏÂÇëÇóÄÚÈİ
             String url = request.getRequestURL().toString();
             String classMethod = joinPoint.getSignature().getDeclaringType().getSimpleName() + "." + joinPoint.getSignature().getName();
             Signature signature = joinPoint.getSignature();
@@ -53,10 +80,10 @@ public class HttpAspect {
             MethodSignature methodSignature = (MethodSignature) signature;
             Method method = methodSignature.getMethod();
             String headers = buildRequestHeaders(request);
+
             if (!StringUtil.isEmpty(headers)) {
                 sb.append(" | ").append("HEADER -> ").append(headers);
             }
-            LOGGER.info(sb.toString());
             String params = buildRequestParams(request);
             if (!StringUtil.isEmpty(params)) {
                 sb =new StringBuilder().append("PARAMS -> ").append(params);
@@ -66,8 +93,9 @@ public class HttpAspect {
             LOGGER.error("HaLogParamAspect error.", ex);
         }
     }
+
     /**
-     * ç»„è£…è¯·æ±‚å¤´ä¿¡æ¯ï¼ˆåªæ‰“å°é…ç½®éœ€è¦æ‰“å°çš„ï¼‰
+     * ×é×°ÇëÇóÍ·ĞÅÏ¢£¨Ö»´òÓ¡ÅäÖÃĞèÒª´òÓ¡µÄ£©
      *
      */
     private String buildRequestHeaders(HttpServletRequest request) {
@@ -78,6 +106,9 @@ public class HttpAspect {
             StringBuilder sb = new StringBuilder();
             while (headerNames.hasMoreElements()) {
                 String nextElement = headerNames.nextElement();
+                if(nextElement.equals("Authorization")){
+                    continue;
+                }
                 if (sb.length() > 0) {
                     sb.append("&");
                 }
@@ -88,12 +119,14 @@ public class HttpAspect {
     }
 
     /**
-     * ç»„è£…è¯·æ±‚å‚æ•°ä¿¡æ¯
+     * ×é×°ÇëÇó²ÎÊıĞÅÏ¢
      */
     private String buildRequestParams(HttpServletRequest request) {
         StringBuilder sb = new StringBuilder();
         Map<String, String[]> parameterMap = request.getParameterMap();
         if (null == parameterMap) {
+            return "";
+        }else if (0 == parameterMap.size()) {
             return "";
         } else {
             for (String key : parameterMap.keySet()) {
@@ -105,7 +138,7 @@ public class HttpAspect {
 
         }
 
-        //è·å–bodyä¿¡æ¯
+        //»ñÈ¡bodyĞÅÏ¢
         BufferedReader br = null;
         try
         {
@@ -143,31 +176,86 @@ public class HttpAspect {
     public Object doAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         long beginTime = System.currentTimeMillis();
         MethodSignature signature = (MethodSignature) proceedingJoinPoint.getSignature();
-        //è·å–è¢«æ‹¦æˆªçš„æ–¹æ³•
+        //»ñÈ¡±»À¹½ØµÄ·½·¨
         Method method = signature.getMethod();
-        //è·å–è¢«æ‹¦æˆªçš„æ–¹æ³•å
+        //»ñÈ¡±»À¹½ØµÄ·½·¨Ãû
         String methodName = method.getName();
-        LOGGER.info("startï¼Œmethodï¼š{}", methodName);
-        try {
-            Object obj = proceedingJoinPoint.proceed();
+        LOGGER.info("start£¬{}", methodName);
+        if (method.getAnnotation(ReSubmit.class) != null) {
+            Object obj = doReSubmit(proceedingJoinPoint);
             long costMs = System.currentTimeMillis() - beginTime;
-            LOGGER.info("{} endï¼Œconsumingï¼š{}ms", methodName, costMs);
+            LOGGER.info("end£¬{} consuming£º{}ms", methodName, costMs);
             return obj;
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-            throw throwable;
+        }else {
+            try {
+                Object obj = proceedingJoinPoint.proceed();
+                long costMs = System.currentTimeMillis() - beginTime;
+                LOGGER.info("end£¬{} consuming£º{}ms", methodName, costMs);
+                return obj;
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+                throw throwable;
+            }
+        }
+
+    }
+
+    private Object doReSubmit(ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+        HttpServletResponse response = attributes.getResponse();
+        // ´Ë´¦¿ÉÒÔÓÃtoken»òÕßJSessionId
+        String authorization = request.getHeader("Authorization");
+        String[] parts = authorization.split("\\.");
+        String token = userPrefix + parts[2];
+        String path = request.getServletPath();
+        String key = getKey(token, path);
+        long currentTime = System.currentTimeMillis() + TIME;
+        boolean isSuccess = redisLockService.lock(key, String.valueOf(currentTime));
+        LOGGER.info("tryLock key = [{}], currentTime = [{}]", key, String.valueOf(currentTime));
+        if (isSuccess) {
+            LOGGER.info("tryLock success, key = [{}], currentTime = [{}]", key, String.valueOf(currentTime));
+            // »ñÈ¡Ëø³É¹¦
+            Object result;
+            try {
+                // Ö´ĞĞ½ø³Ì
+                result = proceedingJoinPoint.proceed();
+            } finally {
+                // ½âËø
+                redisLockService.unLock(key, String.valueOf(currentTime));
+                LOGGER.info("releaseLock success, key = [{}], clientId = [{}]", key, String.valueOf(currentTime));
+            }
+
+            return result;
+
+        } else {
+            // »ñÈ¡ËøÊ§°Ü£¬ÈÏÎªÊÇÖØ¸´Ìá½»µÄÇëÇó
+            LOGGER.info("tryLock fail, key = [{}]", key);
+            Map<String, Object> map = new HashMap<>();
+            map.put("code", GenericResponse.CODE_NG);
+            map.put("msg","²Ù×÷¹ıÓÚÆµ·±£¬ÇëÉÔºóÔÙÊÔ");
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write(objectMapper.writeValueAsString(map));
+            return null;
         }
     }
+
+    private String getKey(String token, String path) {
+        return token + path;
+    }
+
+    private String getClientId() {
+        return UUID.randomUUID().toString();
+    }
+
     /**
      *
      * @param object
-     * æè¿°ï¼š
+     * ÃèÊö£º
      */
     @AfterReturning(pointcut = "log()",returning = "object")
     public void doAfterReturing(Object object){
         if(object instanceof JSONObject){
-            LOGGER.info("RESPONSE -> {}", object.toString());
-        }else if(object instanceof com.alibaba.fastjson.JSONObject){
             LOGGER.info("RESPONSE -> {}", object.toString());
         }else if(object instanceof ResponseEntity){
             ResponseEntity res  = (ResponseEntity) object;

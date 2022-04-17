@@ -1,27 +1,35 @@
 package com.jt.lux.controller.login;
 
 import com.jt.lux.entity.security.UserLogin;
+import com.jt.lux.mapper.security.MenuTreeMapper;
+import com.jt.lux.mapper.security.UserLoginSecurityGroupMapper;
 import com.jt.lux.service.login.LoginService;
+import com.jt.lux.service.login.MsgService;
 import com.jt.lux.util.GenericDataResponse;
 import com.jt.lux.util.GenericResponse;
+import com.jt.lux.util.idg.DefaultUidGenerator;
 import com.jt.lux.vo.common.LoginVO;
+import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 
 /**
- * @æè¿°ï¼šç”¨æˆ·ç™»å½•
- * @ä½œè€…ï¼š
- * @åˆ›å»ºæ—¥æœŸï¼š 2018-7-25 14:39
- * @ç‰ˆæƒï¼š
+ * @ÃèÊö£ºÓÃ»§µÇÂ¼
+ * @×÷Õß£º
+ * @´´½¨ÈÕÆÚ£º 2018-7-25 14:39
+ * @°æÈ¨£º
  */
+@Api(value = "µÇÂ¼Ïà¹Ø", tags = { "µÇÂ¼Ïà¹Ø-½Ó¿Ú" })
 @RestController
 @RequestMapping("/api")
 public class LoginController {
@@ -31,29 +39,69 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
+    @Autowired
+    @Qualifier("idg")
+    private DefaultUidGenerator idg;
+
+    @Autowired
+    private MsgService msgService;
+
+    @Autowired
+    private UserLoginSecurityGroupMapper userLoginSecurityGroupMapper;
+
+    @Autowired
+    private MenuTreeMapper menuTreeMapper;
 
     /**
-     * ç”¨æˆ·ç™»å½•
+     * ÓÃ»§µÇÂ¼
      */
-    @PostMapping(value = "/v1/userLogin", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public ResponseEntity<GenericDataResponse<UserLogin>> userLogin(@Valid @RequestBody LoginVO loginVO, HttpServletRequest request) {
-        return loginService.userLogin(loginVO, request);
+    @ApiOperation(value = "ÓÃ»§µÇÂ¼", notes = "ÓÃ»§µÇÂ¼-½Ó¿Ú")
+    @PostMapping(value = "/v1/userLogin", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<GenericDataResponse<UserLogin>> userLogin(@Valid @RequestBody LoginVO loginVO, HttpServletRequest request, HttpServletResponse response) {
+        return loginService.userLogin(loginVO, request,response);
     }
 
     /**
-     * è·å–ç”¨æˆ·æƒé™
+     * ÓÃ»§µÇ³ö
      */
-    @PostMapping(value = "/v1/userSecurityPermissions", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public ResponseEntity<GenericDataResponse<UserLogin>> userLogin(HttpServletRequest request) {
-        return null;
+    @ApiOperation(value = "ÓÃ»§µÇ³ö", notes = "ÓÃ»§µÇ³ö-½Ó¿Ú")
+    @PostMapping(value = "/v1/logout", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        String authorization = request.getHeader("Authorization");
+        String partyId = (String) request.getAttribute("partyId");
+        loginService.logout(authorization,partyId);
+
+        return GenericDataResponse.ok();
+    }
+
+
+
+    /**
+     * ·¢ËÍ¶ÌĞÅ·şÎñ
+     * @param phoneNum
+     * @return
+     */
+    @GetMapping(value = "/v1/sendSMS",produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ApiOperation(value = "·¢ËÍ¶ÌĞÅ·şÎñ", notes = "·¢ËÍ¶ÌĞÅ·şÎñ-½Ó¿Ú")
+    @ApiResponses({@ApiResponse(code = 200, response = GenericResponse.class, message = "·¢ËÍ³É¹¦")})
+    public ResponseEntity<?> sendSMS(@RequestParam String phoneNum,
+                                     @ApiParam(name = "sign", value = "Ç©Ãû:md5(ÊÖ»úºÅ|secret)¡£ secret£ºyougu", required = true)
+                                     @RequestParam String sign,HttpServletRequest request) {
+        msgService.sendMsg(request,phoneNum,sign);
+        return GenericResponse.ok();
     }
 
     /**
-     * getTest
-     * @RequestParam labelåç§°
+     * Ë¢ĞÂtoken
      */
-    @PostMapping(value = "/v1/getTest", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public ResponseEntity<GenericDataResponse<String>> getTest(@RequestParam(value = "labelName")String labelName) {
-        return GenericDataResponse.okWithData("ss");
+    @ApiOperation(value = "Ë¢ĞÂtoken", notes = "Ë¢ĞÂtoken")
+    @PostMapping(value = "/refresh_token", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<?> refreshToken(@RequestBody String refreshToken,HttpServletResponse response) {
+
+        return loginService.refreshToken(refreshToken,response);
     }
+
+
+
+
 }

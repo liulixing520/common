@@ -1,16 +1,20 @@
 package com.jt.lux.entity.security;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.*;
 
 /**
- * ä¼šå‘˜
+ * »áÔ±
  */
 @Data
 @Builder
@@ -23,210 +27,458 @@ public class Person {
     private String partyId;
 
     /**
-     * ç§°å‘¼
+     * ³Æºô
      */
+    @ApiModelProperty("³Æºô")
     @Column(name = "SALUTATION")
     private String salutation;
 
     /**
-     * å§“
+     * ĞÕ
      */
+    @ApiModelProperty("ĞÕÃû-È¡Õâ¸öÖµ")
     @Column(name = "FIRST_NAME")
     private String firstName;
 
     /**
-     * ä¸­é—´å
+     * ÖĞ¼äÃû
      */
+    @ApiModelProperty("ÖĞ¼äÃû")
     @Column(name = "MIDDLE_NAME")
     private String middleName;
 
     /**
-     * æœ€åä¸€ä¸ªåå­—
+     * ×îºóÒ»¸öÃû×Ö
      */
+    @ApiModelProperty("×îºóÒ»¸öÃû×Ö")
     @Column(name = "LAST_NAME")
     private String lastName;
 
     /**
-     * å¤´è¡”
+     * Í·ÏÎ
      */
+    @ApiModelProperty("Í·ÏÎ")
     @Column(name = "PERSONAL_TITLE")
     private String personalTitle;
-
+    @JsonIgnore
     @Column(name = "SUFFIX")
     private String suffix;
 
-    @Column(name = "OPEN_ID")
-    private String openId;
-
     /**
-     * æ˜µç§°
+     * êÇ³Æ
      */
+    @ApiModelProperty("êÇ³Æ")
     @Column(name = "NICKNAME")
     private String nickname;
-
+    @JsonIgnore
     @Column(name = "FIRST_NAME_LOCAL")
     private String firstNameLocal;
-
+    @JsonIgnore
     @Column(name = "MIDDLE_NAME_LOCAL")
     private String middleNameLocal;
-
+    @JsonIgnore
     @Column(name = "LAST_NAME_LOCAL")
     private String lastNameLocal;
 
+    @JsonIgnore
     @Column(name = "OTHER_LOCAL")
     private String otherLocal;
 
-    /**
-     * æˆå‘˜id
-     */
-    @Column(name = "MEMBER_ID")
-    private String memberId;
 
     /**
-     * æ€§åˆ«
+     * ĞÔ±ğ
      */
+    @ApiModelProperty("ĞÔ±ğ M:ÄĞ  F:Å®")
     @Column(name = "GENDER")
     private String gender;
 
     /**
-     * ç”Ÿæ—¥
+     * ÉúÈÕ
      */
+    @ApiModelProperty("ÉúÈÕ")
     @Column(name = "BIRTH_DATE")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date birthDate;
 
     /**
-     * æ­»äº¡æ—¥æœŸ
+     * ÄêÁä
      */
+    @Transient
+    @ApiModelProperty("ÄêÁä")
+    private String age;
+
+    /**
+     * ËÀÍöÈÕÆÚ
+     */
+    @JsonIgnore
     @Column(name = "DECEASED_DATE")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date deceasedDate;
 
+    /**
+     * Éí¸ß
+     */
+    @ApiModelProperty("Éí¸ß")
     @Column(name = "HEIGHT")
     private Double height;
-
+    /**
+     * ÌåÖØ
+     */
+    @ApiModelProperty("ÌåÖØ")
     @Column(name = "WEIGHT")
     private Double weight;
-
+    @JsonIgnore
     @Column(name = "MOTHERS_MAIDEN_NAME")
     private String mothersMaidenName;
-
+    @JsonIgnore
     @Column(name = "MARITAL_STATUS")
     private String maritalStatus;
 
     /**
-     * ç¤¾ä¼šä¿éšœå·ç 
+     * Éç»á±£ÕÏºÅÂë
      */
+    @JsonIgnore
+    @ApiModelProperty("Éç»á±£ÕÏºÅÂë")
     @Column(name = "SOCIAL_SECURITY_NUMBER")
     private String socialSecurityNumber;
 
     /**
-     * æŠ¤ç…§å·
+     * »¤ÕÕºÅ
      */
+    @ApiModelProperty("»¤ÕÕºÅ")
     @Column(name = "PASSPORT_NUMBER")
     private String passportNumber;
 
     /**
-     * æŠ¤ç…§è¿‡æœŸæ—¥æœŸ
+     * »¤ÕÕ¹ıÆÚÈÕÆÚ
      */
+    @ApiModelProperty("»¤ÕÕ¹ıÆÚÈÕÆÚ")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "PASSPORT_EXPIRE_DATE")
     private Date passportExpireDate;
-
+    @JsonIgnore
     @Column(name = "TOTAL_YEARS_WORK_EXPERIENCE")
     private Double totalYearsWorkExperience;
 
+    @ApiModelProperty("±¸×¢")
     @Column(name = "COMMENTS")
     private String comments;
-
+    @JsonIgnore
     @Column(name = "EMPLOYMENT_STATUS_ENUM_ID")
     private String employmentStatusEnumId;
-
+    @JsonIgnore
     @Column(name = "RESIDENCE_STATUS_ENUM_ID")
     private String residenceStatusEnumId;
+    /**
+     * ÇóÖ°¸ÚÎ»
+     */
+    @ApiModelProperty("ÇóÖ°¸ÚÎ»")
+    @Column(name = "APPLY_POSITION")
+    private String applyPosition;
 
     /**
-     * å·¥ä½œ
+     * ¹¤×÷
      */
+    @JsonIgnore
+    @ApiModelProperty("¹¤×÷")
     @Column(name = "OCCUPATION")
     private String occupation;
-
+    @JsonIgnore
     @Column(name = "YEARS_WITH_EMPLOYER")
     private BigDecimal yearsWithEmployer;
-
+    @JsonIgnore
     @Column(name = "MONTHS_WITH_EMPLOYER")
     private BigDecimal monthsWithEmployer;
-
+    @JsonIgnore
     @Column(name = "EXISTING_CUSTOMER")
     private String existingCustomer;
 
     /**
-     * èº«ä»½è¯å·ç 
+     * Ö¤¼şÀàĞÍ
      */
-    @Column(name = "CARD_ID")
-    private String cardId;
+    @ApiModelProperty("Ö¤¼şÀàĞÍ")
+    @Column(name = "CARD_TYPE")
+    private String cardType;
 
+    /**
+     * Éí·İÖ¤ºÅÂë
+     */
+    @ApiModelProperty("Éí·İÖ¤ºÅÂë")
+    @Column(name = "ID_CARD")
+    private String idCard;
+    /**
+     * Éí·İÖ¤¹ıÆÚÈÕÆÚ
+     */
+    @ApiModelProperty("Éí·İÖ¤¹ıÆÚÈÕÆÚ")
+    @Column(name = "ID_CARD_EXPIRE_DATE")
+    private String idCardExpireDate;
+
+    /**
+     * Éí·İÖ¤ÆğÆÚ
+     */
+    @ApiModelProperty("Éí·İÖ¤ÆğÆÚ")
+    @Column(name = "ID_CARD_START_DATE")
+    private String idCardStartDate;
+
+    @JsonIgnore
     @Column(name = "LAST_UPDATED_STAMP")
     private Date lastUpdatedStamp;
-
+    @JsonIgnore
     @Column(name = "LAST_UPDATED_TX_STAMP")
     private Date lastUpdatedTxStamp;
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "CREATED_STAMP")
     private Date createdStamp;
-
+    @JsonIgnore
     @Column(name = "CREATED_TX_STAMP")
     private Date createdTxStamp;
-
+    @JsonIgnore
     @Column(name = "PERSON_SORT_NUM")
     private BigDecimal personSortNum;
-
+    @JsonIgnore
     @Column(name = "PERSON_SORT_DEPART_ID")
     private String personSortDepartId;
-
+    @JsonIgnore
     @Column(name = "UFM_FILE_PATH")
     private String ufmFilePath;
 
     /**
-     * æ‰‹æœºå·
+     * ÊÖ»úºÅ
      */
+    @ApiModelProperty("ÊÖ»úºÅ")
     @Column(name = "MOBILE_NUM")
     private String mobileNum;
 
     /**
-     * åº§æœºå·
+     * ×ù»úºÅ
      */
+    @ApiModelProperty("³Æºô")
     @Column(name = "TELECOM_NUM")
     private String telecomNum;
 
     /**
-     * é‚®ç®±
+     * ÓÊÏä
      */
+    @ApiModelProperty("ÓÊÏä")
     @Column(name = "EMAIL")
     private String email;
 
     /**
-     * è¯¦ç»†åœ°å€
+     * Ê¡±àÂë
      */
+    @ApiModelProperty("Ê¡±àÂë")
+    @Column(name = "PROVINCE")
+    private String province;
+
+    /**
+     * ÊĞ±àÂë
+     */
+    @ApiModelProperty("ÊĞ±àÂë")
+    @Column(name = "CITY")
+    private String city;
+
+    /**
+     * ÏØ£¨Çø£©±àÂë
+     */
+    @ApiModelProperty("ÏØ£¨Çø£©±àÂë")
+    @Column(name = "CNTY")
+    private String cnty;
+
+
+    /**
+     * ÏêÏ¸µØÖ·
+     */
+    @ApiModelProperty("ÏêÏ¸µØÖ·")
     @Column(name = "ADDRESS")
     private String address;
 
+    /**
+     * ½ô¼±ÁªÂçÈË
+     */
+    @ApiModelProperty("½ô¼±ÁªÂçÈË")
+    @Column(name = "EMRGENCY_CONTACT")
+    private String emergencyContact;
+    /**
+     * ½ô¼±ÁªÂçÈËµç»°
+     */
+    @ApiModelProperty("½ô¼±ÁªÂçÈËµç»°")
+    @Column(name = "EMRGENCY_CONTACT_PHONE")
+    private String emergencyContactPhone;
+
+    /**
+     * Í·ÏñµØÖ·
+     */
+    @ApiModelProperty("Í·ÏñµØÖ·")
     @Column(name = "HEAD_PIC_URL")
     private String headPicUrl;
 
-
+    /**
+     * ¼¼ÄÜ
+     */
+    @ApiModelProperty("¼¼ÄÜ")
     @Column(name = "PROFESSION")
     private String profession;
 
+    /**
+     * »éÒöÇé¿ö
+     */
+    @JsonIgnore
     @Column(name = "MARRIAGE")
     private String marriage;
 
+
+    @JsonIgnore
+    @Column(name = "OTHER_MARRIAGE_DESC")
+    private String otherMarriageDesc;
+
     /**
-     * å›½ç±
+     * ¹ú¼®
      */
+    @ApiModelProperty("¹ú¼®")
     @Column(name = "NATION")
     private String nation;
 
+    /**
+     * ¼®¹á
+     */
+    @ApiModelProperty("¼®¹á")
+    @Column(name = "NATIVE_PLACE")
+    private String nativePlace;
 
-    @Column(name = "OTHER_MARRIAGE_DESC")
-    private String otherMarriageDesc;
+    /**
+     * Ñ§Àú
+     */
+    @ApiModelProperty("Ñ§Àú")
+    @Column(name = "EDUCATION")
+    private String education;
+
+    /**
+     * ¸öÈË¼ò½é
+     */
+    @ApiModelProperty("¸öÈË¼ò½é")
+    @Column(name = "INTRODUCTION")
+    private String introduction;
+
+    /**
+     * ¸öÈËÈ«ÉíÕÕ
+     */
+    @ApiModelProperty("¸öÈËÈ«ÉíÕÕ")
+    @Column(name = "PHOTOGRAPH_ID")
+    private String photographId;
+
+
+    /**
+     * ¸öÈËĞÎÏóÊÓÆµ
+     */
+    @ApiModelProperty("¸öÈËĞÎÏóÊÓÆµ")
+    @Column(name = "VIDEO_ID")
+    private String videoId;
+
+    /**
+     * ×ÊÖÊid
+     */
+    @ApiModelProperty("×ÊÖÊid")
+    @Column(name = "CERTIFICATION_ID")
+    private String certificationId;
+
+    /**
+     * ¸½¼şid¼¯ºÏ£¬¶ººÅ¸ô¿ª
+     */
+    @ApiModelProperty("¸½¼şid¼¯ºÏ£¬¶ººÅ¸ô¿ª")
+    @Column(name = "ATTR_IDS")
+    private String attIds;
+
+    /**
+     * ·ÖÏíÈËpartyId
+     */
+    @Transient
+    @ApiModelProperty("·ÖÏíÈËpartyId")
+    private String refPartyId;
+
+
+    public String getPhotographId() {
+        return photographId;
+    }
+
+    public void setPhotographId(String photographId) {
+        this.photographId = photographId;
+    }
+
+    public String getVideoId() {
+        return videoId;
+    }
+
+    public void setVideoId(String videoId) {
+        this.videoId = videoId;
+    }
+
+    public String getCertificationId() {
+        return certificationId;
+    }
+
+    public void setCertificationId(String certificationId) {
+        this.certificationId = certificationId;
+    }
+
+    public String getAttIds() {
+        return attIds;
+    }
+
+    public void setAttIds(String attIds) {
+        this.attIds = attIds;
+    }
+
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
+    }
+
+    public String getEmergencyContact() {
+        return emergencyContact;
+    }
+
+    public void setEmergencyContact(String emergencyContact) {
+        this.emergencyContact = emergencyContact;
+    }
+
+    public String getEmergencyContactPhone() {
+        return emergencyContactPhone;
+    }
+
+    public void setEmergencyContactPhone(String emergencyContactPhone) {
+        this.emergencyContactPhone = emergencyContactPhone;
+    }
+
+    public String getNativePlace() {
+        return nativePlace;
+    }
+
+    public void setNativePlace(String nativePlace) {
+        this.nativePlace = nativePlace;
+    }
+
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
 
     /**
      * @return PARTY_ID
@@ -396,18 +648,12 @@ public class Person {
         this.otherLocal = otherLocal;
     }
 
-    /**
-     * @return MEMBER_ID
-     */
-    public String getMemberId() {
-        return memberId;
+    public String getApplyPosition() {
+        return applyPosition;
     }
 
-    /**
-     * @param memberId
-     */
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
+    public void setApplyPosition(String applyPosition) {
+        this.applyPosition = applyPosition;
     }
 
     /**
@@ -662,19 +908,6 @@ public class Person {
         this.existingCustomer = existingCustomer;
     }
 
-    /**
-     * @return CARD_ID
-     */
-    public String getCardId() {
-        return cardId;
-    }
-
-    /**
-     * @param cardId
-     */
-    public void setCardId(String cardId) {
-        this.cardId = cardId;
-    }
 
     /**
      * @return LAST_UPDATED_STAMP

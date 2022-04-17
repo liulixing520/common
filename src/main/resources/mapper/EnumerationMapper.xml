@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jt.lux.mapper.system.EnumerationMapper" >
+  <resultMap id="BaseResultMap" type="com.jt.lux.entity.system.Enumeration" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ENUM_ID" property="enumId" jdbcType="VARCHAR" />
+    <result column="ENUM_TYPE_ID" property="enumTypeId" jdbcType="VARCHAR" />
+    <result column="ENUM_CODE" property="enumCode" jdbcType="VARCHAR" />
+    <result column="SEQUENCE_ID" property="sequenceId" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="LAST_UPDATED_STAMP" property="lastUpdatedStamp" jdbcType="TIMESTAMP" />
+    <result column="LAST_UPDATED_TX_STAMP" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP" />
+    <result column="CREATED_STAMP" property="createdStamp" jdbcType="TIMESTAMP" />
+    <result column="CREATED_TX_STAMP" property="createdTxStamp" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <select id="selectByEnumTypeId" resultMap="BaseResultMap" >
+    select ENUM_ID,ENUM_TYPE_ID,ENUM_CODE,SEQUENCE_ID,DESCRIPTION from enumeration where ENUM_TYPE_ID = #{enumTypeId} order by SEQUENCE_ID asc;
+  </select>
+</mapper>

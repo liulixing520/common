@@ -3,7 +3,10 @@ package com.jt.lux;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jt.lux.util.idg.DefaultUidGenerator;
+import com.jt.lux.util.idg.WorkerIdAssigner;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
@@ -17,6 +20,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 @SpringBootApplication
 @ServletComponentScan
 @EnableScheduling
@@ -25,8 +31,59 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @MapperScan(basePackages = "com.jt.lux.mapper")
 public class CommonApplication {
 
+	private static final int WORKER_BITS = 22;
+	private static final int TIME_BITS = 29; // 可运行大约17年
+	private static final int SEQ_BITS = 63 - WORKER_BITS - TIME_BITS;
+
+	@Value("${jtpf.idg.workerId}")
+	private String workerId;
+
+	@Value("${jtpf.idg.workerIdConf}")
+	private String workerIdConf;
+
+
 	public static void main(String[] args) {
 		SpringApplication.run(CommonApplication.class, args);
+	}
+
+	@Bean("idg")
+	public DefaultUidGenerator uidGenerator() {
+		DefaultUidGenerator g = new DefaultUidGenerator();
+		//g.setWorkerIdAssigner(zkWorkerIdAssigner());
+		g.setWorkerIdAssigner(envWorkerIdAssigner(workerId));
+		g.setSeqBits(SEQ_BITS);
+		g.setTimeBits(TIME_BITS);
+		g.setWorkerBits(WORKER_BITS);
+		return g;
+	}
+
+
+	@Bean
+	public WorkerIdAssigner envWorkerIdAssigner(String workerId) {
+		Long wid = null;
+		if ("hostname".equalsIgnoreCase(workerIdConf)) {
+			try {
+				String host = InetAddress.getLocalHost().getHostName();
+				int pos = host.lastIndexOf("-");
+				wid = Long.parseLong(host.substring(pos + 1));
+			} catch (UnknownHostException uhe) {
+				throw new RuntimeException(uhe);
+			}
+		} else {
+			wid = Long.parseLong(workerId);
+		}
+
+		return new EnvWorkerIdAssigner(wid);
+	}
+	private static final class EnvWorkerIdAssigner implements WorkerIdAssigner {
+		private long workerId;
+		public EnvWorkerIdAssigner(long workerId) {
+			this.workerId = workerId;
+		}
+		@Override
+		public long assignWorkerId() {
+			return this.workerId;
+		}
 	}
 
 	@Bean(name = "restTemplate")

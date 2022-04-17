@@ -1,21 +1,13 @@
 package com.jt.lux.util;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
- * idç”Ÿæˆå™¨ï¼ŒåŸºäºsnowflakeç®—æ³•è¡ç”Ÿï¼Œè¿”å›å€¼ä¸ºå­—ç¬¦ä¸²ï¼ŒåŒ…æ‹¬å¯è¯»æ—¶é—´å†…å®¹<br/>
- * æ ¼å¼ä¸ºï¼šyyyyMMddHHMMssSSS+æ•°æ®ä¸­å¿ƒç¼–å·+æœºå™¨ID+é‡å¤è®¡æ•°
+ * idÉú³ÉÆ÷£¬»ùÓÚsnowflakeËã·¨ÑÜÉú£¬·µ»ØÖµÎª×Ö·û´®£¬°üÀ¨¿É¶ÁÊ±¼äÄÚÈİ<br/>
+ * ¸ñÊ½Îª£ºyyyyMMddHHMMssSSS+Êı¾İÖĞĞÄ±àºÅ+»úÆ÷ID+ÖØ¸´¼ÆÊı
  *
  */
 @Component
@@ -25,15 +17,15 @@ public class IdGenerator {
     private long datacenterId;
     private long sequence = 0L;
     // private long twepoch = 1288834974657L; // Thu, 04 Nov 2010 01:42:54 GMT
-    private long workerIdBits = 5L; // èŠ‚ç‚¹IDé•¿åº¦
-    private long datacenterIdBits = 5L; // æ•°æ®ä¸­å¿ƒIDé•¿åº¦
-    private long maxWorkerId = -1L ^ (-1L << workerIdBits); // æœ€å¤§æ”¯æŒæœºå™¨èŠ‚ç‚¹æ•°0~31ï¼Œä¸€å…±32ä¸ª
-    private long maxDatacenterId = -1L ^ (-1L << datacenterIdBits); // æœ€å¤§æ”¯æŒæ•°æ®ä¸­å¿ƒèŠ‚ç‚¹æ•°0~31ï¼Œä¸€å…±32ä¸ª
-    private long sequenceBits = 12L; // åºåˆ—å·12ä½
-    private long workerIdShift = sequenceBits; // æœºå™¨èŠ‚ç‚¹å·¦ç§»12ä½
-    private long datacenterIdShift = sequenceBits + workerIdBits; // æ•°æ®ä¸­å¿ƒèŠ‚ç‚¹å·¦ç§»17ä½
+    private long workerIdBits = 5L; // ½ÚµãID³¤¶È
+    private long datacenterIdBits = 5L; // Êı¾İÖĞĞÄID³¤¶È
+    private long maxWorkerId = -1L ^ (-1L << workerIdBits); // ×î´óÖ§³Ö»úÆ÷½ÚµãÊı0~31£¬Ò»¹²32¸ö
+    private long maxDatacenterId = -1L ^ (-1L << datacenterIdBits); // ×î´óÖ§³ÖÊı¾İÖĞĞÄ½ÚµãÊı0~31£¬Ò»¹²32¸ö
+    private long sequenceBits = 12L; // ĞòÁĞºÅ12Î»
+    private long workerIdShift = sequenceBits; // »úÆ÷½Úµã×óÒÆ12Î»
+    private long datacenterIdShift = sequenceBits + workerIdBits; // Êı¾İÖĞĞÄ½Úµã×óÒÆ17Î»
     // private long timestampLeftShift = sequenceBits + workerIdBits + datacenterIdBits; //
-    // æ—¶é—´æ¯«ç§’æ•°å·¦ç§»22ä½
+    // Ê±¼äºÁÃëÊı×óÒÆ22Î»
     private long sequenceMask = -1L ^ (-1L << sequenceBits); // 4095
     private long lastTimestamp = -1L;
 
@@ -57,22 +49,22 @@ public class IdGenerator {
 
     public synchronized String nextId() {
         LOG.debug("idgenerator:{}",this);
-        long timestamp = timeGen(); // è·å–å½“å‰æ¯«ç§’æ•°
-        // å¦‚æœæœåŠ¡å™¨æ—¶é—´æœ‰é—®é¢˜(æ—¶é’Ÿåé€€) æŠ¥é”™ã€‚
+        long timestamp = timeGen(); // »ñÈ¡µ±Ç°ºÁÃëÊı
+        // Èç¹û·şÎñÆ÷Ê±¼äÓĞÎÊÌâ(Ê±ÖÓºóÍË) ±¨´í¡£
         if (timestamp < lastTimestamp) {
             throw new RuntimeException(String.format(
                     "Clock moved backwards. Refusing to generate id for %d milliseconds", lastTimestamp - timestamp));
         }
-        // å¦‚æœä¸Šæ¬¡ç”Ÿæˆæ—¶é—´å’Œå½“å‰æ—¶é—´ç›¸åŒ,åœ¨åŒä¸€æ¯«ç§’å†…
+        // Èç¹ûÉÏ´ÎÉú³ÉÊ±¼äºÍµ±Ç°Ê±¼äÏàÍ¬,ÔÚÍ¬Ò»ºÁÃëÄÚ
         if (lastTimestamp == timestamp) {
-            // sequenceè‡ªå¢ï¼Œå› ä¸ºsequenceåªæœ‰12bitï¼Œæ‰€ä»¥å’ŒsequenceMaskç›¸ä¸ä¸€ä¸‹ï¼Œå»æ‰é«˜ä½
+            // sequence×ÔÔö£¬ÒòÎªsequenceÖ»ÓĞ12bit£¬ËùÒÔºÍsequenceMaskÏàÓëÒ»ÏÂ£¬È¥µô¸ßÎ»
             sequence = (sequence + 1) & sequenceMask;
-            // åˆ¤æ–­æ˜¯å¦æº¢å‡º,ä¹Ÿå°±æ˜¯æ¯æ¯«ç§’å†…è¶…è¿‡4095ï¼Œå½“ä¸º4096æ—¶ï¼Œä¸sequenceMaskç›¸ä¸ï¼Œsequenceå°±ç­‰äº0
+            // ÅĞ¶ÏÊÇ·ñÒç³ö,Ò²¾ÍÊÇÃ¿ºÁÃëÄÚ³¬¹ı4095£¬µ±Îª4096Ê±£¬ÓësequenceMaskÏàÓë£¬sequence¾ÍµÈÓÚ0
             if (sequence == 0) {
-                timestamp = tilNextMillis(lastTimestamp); // è‡ªæ—‹ç­‰å¾…åˆ°ä¸‹ä¸€æ¯«ç§’
+                timestamp = tilNextMillis(lastTimestamp); // ×ÔĞıµÈ´ıµ½ÏÂÒ»ºÁÃë
             }
         } else {
-            sequence = 0L; // å¦‚æœå’Œä¸Šæ¬¡ç”Ÿæˆæ—¶é—´ä¸åŒ,é‡ç½®sequenceï¼Œå°±æ˜¯ä¸‹ä¸€æ¯«ç§’å¼€å§‹ï¼Œsequenceè®¡æ•°é‡æ–°ä»0å¼€å§‹ç´¯åŠ 
+            sequence = 0L; // Èç¹ûºÍÉÏ´ÎÉú³ÉÊ±¼ä²»Í¬,ÖØÖÃsequence£¬¾ÍÊÇÏÂÒ»ºÁÃë¿ªÊ¼£¬sequence¼ÆÊıÖØĞÂ´Ó0¿ªÊ¼ÀÛ¼Ó
         }
         lastTimestamp = timestamp;
 
@@ -82,8 +74,8 @@ public class IdGenerator {
 
         Long suffix = (datacenterId << datacenterIdShift) | (workerId << workerIdShift) | sequence;
         int suffixLen = suffix.toString().length();
-        if (suffixLen < 4) {
-            idStr.append(StringUtils.repeat("0", 4 - suffixLen));
+        if (suffixLen < 3) {
+            idStr.append((int)(Math.random()*100));
         }
         idStr.append(suffix);
 
@@ -121,49 +113,11 @@ public class IdGenerator {
     public static void main(String[] args) throws Exception {
         IdGenerator id = new IdGenerator();
         System.out.println(id.nextId() + " ");
-//        final Set<String> set = Collections.synchronizedSet(new HashSet<>());
-//
-//        final IdGenerator w1 = new IdGenerator(0, 0);
-//        final IdGenerator w2 = new IdGenerator(1, 0);
-//        final CyclicBarrier cdl = new CyclicBarrier(100);
-//        AtomicInteger count = new AtomicInteger(0);
-//
-//        for (int i = 0; i < 500; i++) {
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    try {
-//                        cdl.await();
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    // id
-//                    String id = w1.nextId();
-//                    if (set.contains(id)) {
-//                        count.incrementAndGet();
-//                        System.out.println(id + " exists");
-//                    }
-//                    set.add(id);
-//                    System.out.println(id);
-//
-//                    // id2
-//                    String id2 = w2.nextId();
-//                    if (set.contains(id2)) {
-//                        count.incrementAndGet();
-//                        System.out.println(id2 + " exists");
-//                    }
-//                    set.add(id2);
-//                    System.out.println(id2);
-//                }
-//            }).start();
-//        }
-//        try {
-//            TimeUnit.SECONDS.sleep(5);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+    }
 
-//        System.out.println(set.size() + " " + count.get());
+    public static String getNextSeqId(){
+        IdGenerator id = new IdGenerator();
+        System.out.println(id.nextId() + " ");
+        return id.nextId()+"";
     }
 }

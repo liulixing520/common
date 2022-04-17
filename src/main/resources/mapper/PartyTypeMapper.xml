@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jt.lux.mapper.security.PartyTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.jt.lux.entity.security.PartyType" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="PARTY_TYPE_ID" property="partyTypeId" jdbcType="VARCHAR" />
+    <result column="PARENT_TYPE_ID" property="parentTypeId" jdbcType="VARCHAR" />
+    <result column="HAS_TABLE" property="hasTable" jdbcType="CHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="LAST_UPDATED_STAMP" property="lastUpdatedStamp" jdbcType="TIMESTAMP" />
+    <result column="LAST_UPDATED_TX_STAMP" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP" />
+    <result column="CREATED_STAMP" property="createdStamp" jdbcType="TIMESTAMP" />
+    <result column="CREATED_TX_STAMP" property="createdTxStamp" jdbcType="TIMESTAMP" />
+  </resultMap>
+</mapper>

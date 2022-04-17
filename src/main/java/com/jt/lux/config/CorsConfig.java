@@ -5,10 +5,9 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
- * @æè¿°ï¼š è§£å†³è·¨åŸŸé—®é¢˜
- * @ä½œè€…ï¼š lux
- * @åˆ›å»ºæ—¥æœŸï¼š 2018-8-10 17:55
- * @ç‰ˆæƒï¼š
+ * @ÃèÊö£º ½â¾ö¿çÓòÎÊÌâ
+ * @×÷Õß£º lux
+ * @´´½¨ÈÕÆÚ£º 2018-8-10 17:55
  */
 @Configuration
 public class CorsConfig extends WebMvcConfigurerAdapter {
@@ -18,5 +17,4 @@ public class CorsConfig extends WebMvcConfigurerAdapter {
         registry.addMapping("/**").allowedOrigins("*").allowCredentials(true).allowedMethods(ORIGINS)
                 .maxAge(3600);
     }
-
 }

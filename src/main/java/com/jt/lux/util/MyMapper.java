@@ -28,12 +28,12 @@ import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.common.MySqlMapper;
 
 /**
- * 缁ф壙鑷繁鐨凪yMapper
+ * 继承自己的MyMapper
  *
  * @author liuzh
  * @since 2015-09-06 21:53
  */
 public interface MyMapper<T> extends Mapper<T>, MySqlMapper<T> {
     //TODO
-    //FIXME 鐗瑰埆娉ㄦ剰锛岃鎺ュ彛涓嶈兘琚壂鎻忓埌锛屽惁鍒欎細鍑洪敊
+    //FIXME 特别注意，该接口不能被扫描到，否则会出错
 }

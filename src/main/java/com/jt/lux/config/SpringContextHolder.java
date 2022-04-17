@@ -17,14 +17,14 @@ public class SpringContextHolder implements ApplicationContextAware {
     }
 
     /**
-     * @Description: 鑾峰彇 ApplicationContext 瀹瑰櫒
+     * @Description: 获取 ApplicationContext 容器
      */
     public static ApplicationContext getApplicationContext() {
         return applicationContext;
     }
 
     /**
-     * @Description: 鑾峰彇 bean
+     * @Description: 获取 bean
      */
     public static Object getBean(String name) {
         return applicationContext.getBean (name);

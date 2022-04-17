@@ -1,22 +1,24 @@
 package com.jt.lux.entity.security;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
-import javax.persistence.*;
 
 /**
- * æƒé™ä¸å®‰å…¨ç»„ (å¤šå¯¹å¤š)
+ * È¨ÏŞÓë°²È«×é (¶à¶Ô¶à)
  */
 @Table(name = "security_group_permission")
 public class SecurityGroupPermission {
     /**
-     * å®‰å…¨ç»„ä¸»é”®
+     * °²È«×éÖ÷¼ü
      */
     @Id
     @Column(name = "GROUP_ID")
     private String groupId;
 
     /**
-     * æƒé™ä¸»é”®
+     * È¨ÏŞÖ÷¼ü
      */
     @Id
     @Column(name = "PERMISSION_ID")
@@ -35,36 +37,36 @@ public class SecurityGroupPermission {
     private Date createdTxStamp;
 
     /**
-     * è·å–å®‰å…¨ç»„ä¸»é”®
+     * »ñÈ¡°²È«×éÖ÷¼ü
      *
-     * @return GROUP_ID - å®‰å…¨ç»„ä¸»é”®
+     * @return GROUP_ID - °²È«×éÖ÷¼ü
      */
     public String getGroupId() {
         return groupId;
     }
 
     /**
-     * è®¾ç½®å®‰å…¨ç»„ä¸»é”®
+     * ÉèÖÃ°²È«×éÖ÷¼ü
      *
-     * @param groupId å®‰å…¨ç»„ä¸»é”®
+     * @param groupId °²È«×éÖ÷¼ü
      */
     public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
 
     /**
-     * è·å–æƒé™ä¸»é”®
+     * »ñÈ¡È¨ÏŞÖ÷¼ü
      *
-     * @return PERMISSION_ID - æƒé™ä¸»é”®
+     * @return PERMISSION_ID - È¨ÏŞÖ÷¼ü
      */
     public String getPermissionId() {
         return permissionId;
     }
 
     /**
-     * è®¾ç½®æƒé™ä¸»é”®
+     * ÉèÖÃÈ¨ÏŞÖ÷¼ü
      *
-     * @param permissionId æƒé™ä¸»é”®
+     * @param permissionId È¨ÏŞÖ÷¼ü
      */
     public void setPermissionId(String permissionId) {
         this.permissionId = permissionId;

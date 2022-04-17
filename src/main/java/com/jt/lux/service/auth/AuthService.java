@@ -1,33 +1,111 @@
 package com.jt.lux.service.auth;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
+import io.jsonwebtoken.*;
+import org.springframework.stereotype.Component;
+
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
 /**
- * @æè¿°ï¼š
- * @ä½œè€…ï¼š lux
- * @åˆ›å»ºæ—¥æœŸï¼š 2020-12-23 15:10
- * @ç‰ˆæƒï¼š æ±Ÿæ³°ä¿é™©ç»çºªè‚¡ä»½æœ‰é™å…¬å¸
+ * @ÃèÊö£º
+ * @×÷Õß£º lux
+ * @´´½¨ÈÕÆÚ£º 2020-12-23 15:10
+
  */
+@Component
 public class AuthService {
 
+    //·şÎñÆ÷µÄkye.ÓÃ»§×ö¼Ó½âÃÜµÄkeyÊı¾İ¡£
+    private static final String JWT_SECERT="jwt_secert";
 
-    private String createToken(String signingKey, int minutes, Map<String, Object> tokenData) {
-        Date expiryDate = getExpiryDate(minutes);
-        return Jwts.builder().setClaims(tokenData)
-                .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS256, signingKey).compact();
+
+
+    public  SecretKey generalKey(){
+        try {
+            byte[] encodedKey=JWT_SECERT.getBytes("UTF-8");
+            SecretKey key=new SecretKeySpec(encodedKey,0,encodedKey.length,"AES");
+            return key;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    private Date getExpiryDate(int minutes) {
+    /**
+     * Ç©·¢JWT£¬´´½¨tokenµÄ·½·¨
+     * @param id  jwtµÄÎ¨Ò»±êÊ¶£¬Ö÷ÒªÓÃÀ´×öÒ»´ÎĞÔtoken¡£
+     * @param iss  jwtÇ©·¢Õß
+     * @param subject  jwtËùÃæÏòµÄÓÃ»§¡£Ò»°ãÊ¹ÓÃÓÃ»§µÄµÇÂ¼Ãû
+     * @param minutes  ÓĞĞ§ÆÚ£¬µ¥Î»·ÖÖÓ
+     * @return  token ÊÇÎªÒ»¸öÓÃ»§µÄÓĞĞ§µÇÂ¼ÖÜÆÚ×¼±¸µÄÒ»¸ötkoen ¡£ÓÃ»§ÍÆ³ö»ò³¬Ê±£¬tokenÊ§Ğ§
+     */
+    public  String createToken(String id,String iss,String subject,int minutes,Map<String, Object> tokenData){
+        try {
+            SignatureAlgorithm signatureAlgorithm= SignatureAlgorithm.HS256;
+            Date expiryDate = getExpiryDate(minutes);
+            SecretKey secretKey=generalKey();
+            JwtBuilder builder= Jwts.builder().setClaims(tokenData)
+                    .setId(id)
+                    .setIssuer(iss)
+                    .setSubject(subject)
+                    .setIssuedAt(new Date())
+                    .setExpiration(expiryDate)
+                    .signWith(signatureAlgorithm,secretKey);//ÉèÖÃÃÜ³×ºÍËã·¨
+            return builder.compact();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+    private static  Date getExpiryDate(int minutes) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         calendar.add(Calendar.MINUTE, minutes);
         return calendar.getTime();
     }
+
+    /**
+     * ½âÎöJWT×Ö·û´®
+     * @param jwt  ¾ÍÊÇÉú³ÉµÄtoekn
+     * @return
+     */
+    public  Claims parseJWT(String jwt){
+        SecretKey secretKey=generalKey();
+        return Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(jwt)
+                .getBody();
+    }
+
+    /**
+     * ÑéÖ¤jwt
+     * @param jwtStr
+     * @return
+     */
+    public  Claims validateJWT(String jwtStr){
+        Claims claims=null;
+        try{
+            claims=parseJWT(jwtStr);
+            //³É¹¦
+        }catch (ExpiredJwtException e){
+            //token¹ıÆÚ
+            e.printStackTrace();
+        }catch (SignatureException e){
+            //Ç©Ãû´íÎó
+            e.printStackTrace();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return claims;
+    }
+
+
 
 }

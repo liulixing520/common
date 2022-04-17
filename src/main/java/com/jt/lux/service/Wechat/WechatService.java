@@ -2,13 +2,9 @@ package com.jt.lux.service.Wechat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
-import com.jt.lux.entity.security.Person;
-import com.jt.lux.entity.security.UserLogin;
 import com.jt.lux.mapper.security.PersonMapper;
-import com.jt.lux.mapper.security.UserLoginMapper;
 import com.jt.lux.service.register.RegisterService;
 import com.jt.lux.util.GenericDataResponse;
-import com.jt.lux.vo.common.RegisterVO;
 import org.apache.commons.lang.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,14 +16,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
  * @描述：
  * @作者： lux
  * @创建日期： 2020-12-18 15:49
- * @版权： 江泰保险经纪股份有限公司
+ * @版权： lux
  */
 @Service
 public class WechatService {
@@ -107,24 +102,7 @@ public class WechatService {
     }
 
     private void loginOrRegisterByOpenId(String openId) {
-        List<Person> personList = personMapper.select(Person.builder().openId(openId).build());
-        if (personList.size() == 0) {
-            registerService.register(RegisterVO.builder().openid(openId).build(),null);
-        }
-    }
 
-//    public void updateConsumerInfo(Consumer consumer) {
-//        Consumer consumerExist = consumerMapper.findConsumerByWechatOpenid(AppContext.getCurrentUserWechatOpenId());
-//        consumerExist.setUpdatedBy(1L);
-//        consumerExist.setUpdatedAt(System.currentTimeMillis());
-//        consumerExist.setGender(consumer.getGender());
-//        consumerExist.setAvatarUrl(consumer.getAvatarUrl());
-//        consumerExist.setWechatOpenid(consumer.getWechatOpenid());
-//        consumerExist.setEmail(consumer.getEmail());
-//        consumerExist.setNickname(consumer.getNickname());
-//        consumerExist.setPhone(consumer.getPhone());
-//        consumerExist.setUsername(consumer.getUsername());
-//        consumerMapper.updateConsumer(consumerExist);
-//    }
+    }
 
 }

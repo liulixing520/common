@@ -18,7 +18,7 @@
     <result column="LAST_NAME_LOCAL" property="lastNameLocal" jdbcType="VARCHAR" />
     <result column="OTHER_LOCAL" property="otherLocal" jdbcType="VARCHAR" />
     <result column="MEMBER_ID" property="memberId" jdbcType="VARCHAR" />
-    <result column="GENDER" property="gender" jdbcType="CHAR" />
+    <result column="GENDER" property="gender" jdbcType="VARCHAR" />
     <result column="BIRTH_DATE" property="birthDate" jdbcType="DATE" />
     <result column="DECEASED_DATE" property="deceasedDate" jdbcType="DATE" />
     <result column="HEIGHT" property="height" jdbcType="DOUBLE" />
@@ -36,7 +36,10 @@
     <result column="YEARS_WITH_EMPLOYER" property="yearsWithEmployer" jdbcType="DECIMAL" />
     <result column="MONTHS_WITH_EMPLOYER" property="monthsWithEmployer" jdbcType="DECIMAL" />
     <result column="EXISTING_CUSTOMER" property="existingCustomer" jdbcType="CHAR" />
-    <result column="CARD_ID" property="cardId" jdbcType="VARCHAR" />
+    <result column="CARD_TYPE" property="cardType" jdbcType="VARCHAR" />
+    <result column="ID_CARD" property="idCard" jdbcType="VARCHAR" />
+    <result column="ID_CARD_EXPIRE_DATE" property="idCardExpireDate" jdbcType="VARCHAR" />
+    <result column="ID_CARD_START_DATE" property="idCardStartDate" jdbcType="VARCHAR" />
     <result column="LAST_UPDATED_STAMP" property="lastUpdatedStamp" jdbcType="TIMESTAMP" />
     <result column="LAST_UPDATED_TX_STAMP" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP" />
     <result column="CREATED_STAMP" property="createdStamp" jdbcType="TIMESTAMP" />
@@ -53,5 +56,9 @@
     <result column="MARRIAGE" property="marriage" jdbcType="VARCHAR" />
     <result column="NATION" property="nation" jdbcType="VARCHAR" />
     <result column="OTHER_MARRIAGE_DESC" property="otherMarriageDesc" jdbcType="VARCHAR" />
+    <result column="PROVINCE" property="province" jdbcType="VARCHAR" />
+    <result column="CITY" property="city" jdbcType="VARCHAR" />
+    <result column="cnty" property="cnty" jdbcType="VARCHAR" />
   </resultMap>
+
 </mapper>

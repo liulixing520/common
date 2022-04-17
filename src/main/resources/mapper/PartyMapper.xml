@@ -21,43 +21,10 @@
     <result column="CREATED_STAMP" property="createdStamp" jdbcType="TIMESTAMP" />
     <result column="CREATED_TX_STAMP" property="createdTxStamp" jdbcType="TIMESTAMP" />
     <result column="DESCRIPTION" property="description" jdbcType="LONGVARCHAR" />
+    <result column="STARS_NUM" property="starsNum" jdbcType="BIGINT" />
+    <result column="EVALUATE_NUM" property="evaluateNum" jdbcType="BIGINT" />
+    <result column="SERVICE_NUM" property="serviceNum" jdbcType="BIGINT" />
+    <result column="CLIENT_ID" property="clientId" jdbcType="VARCHAR" />
   </resultMap>
 
-  <insert id="insertParty" useGeneratedKeys="true" keyProperty="PARTY_ID" keyColumn="PARTY_ID">
-    INSERT INTO PARTY(
-			party_id,
-			PARTY_TYPE_ID,
-			EXTERNAL_ID,
-			PREFERRED_CURRENCY_UOM_ID,
-			STATUS_ID,
-			CREATED_DATE,
-			CREATED_BY_USER_LOGIN,
-			LAST_MODIFIED_DATE,
-			LAST_MODIFIED_BY_USER_LOGIN,
-			DATA_SOURCE_ID,
-			IS_UNREAD,
-			LAST_UPDATED_STAMP,
-			LAST_UPDATED_TX_STAMP,
-			CREATED_STAMP,
-			CREATED_TX_STAMP,
-			DESCRIPTION
-		) VALUES (
-			#{partyId},
-			#{partyTypeId},
-			#{externalId},
-			#{preferredCurrencyUomId},
-			#{statusId},
-			#{createdDate},
-			#{createdByUserLogin},
-			#{lastModifiedDate},
-			#{lastModifiedByUserLogin},
-			#{dataSourceId},
-			#{isUnread},
-			#{lastUpdatedStamp},
-			#{lastUpdatedTxStamp},
-			#{createdStamp},
-			#{createdTxStamp},
-			#{description}
-		)
-  </insert>
 </mapper>

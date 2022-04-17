@@ -1,92 +1,94 @@
 package com.jt.lux.entity.security;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
-import javax.persistence.*;
 
 /**
- * å½“äº‹äººå…³ç³»è¡¨
+ * µ±ÊÂÈË¹ØÏµ±í
  */
 @Table(name = "party_relationship")
 public class PartyRelationship {
     /**
-     * æºå½“äº‹äºº
+     * Ô´µ±ÊÂÈË
      */
     @Id
     @Column(name = "PARTY_ID_FROM")
     private String partyIdFrom;
 
     /**
-     * ç›®æ ‡å½“äº‹äºº
+     * Ä¿±êµ±ÊÂÈË
      */
     @Id
     @Column(name = "PARTY_ID_TO")
     private String partyIdTo;
 
     /**
-     * æºå½“äº‹äººè§’è‰²
+     * Ô´µ±ÊÂÈË½ÇÉ«
      */
     @Id
     @Column(name = "ROLE_TYPE_ID_FROM")
     private String roleTypeIdFrom;
 
     /**
-     * ç›®æ ‡å½“äº‹äººè§’è‰²
+     * Ä¿±êµ±ÊÂÈË½ÇÉ«
      */
     @Id
     @Column(name = "ROLE_TYPE_ID_TO")
     private String roleTypeIdTo;
 
     /**
-     * å¼€å§‹æ—¥æœŸ
+     * ¿ªÊ¼ÈÕÆÚ
      */
     @Id
     @Column(name = "FROM_DATE")
     private Date fromDate;
 
     /**
-     * ç»“æŸæ—¥æœŸ
+     * ½áÊøÈÕÆÚ
      */
     @Column(name = "THRU_DATE")
     private Date thruDate;
 
     /**
-     * çŠ¶æ€id
+     * ×´Ì¬id
      */
     @Column(name = "STATUS_ID")
     private String statusId;
 
     /**
-     * å½“äº‹äººå…³ç³»åç§°
+     * µ±ÊÂÈË¹ØÏµÃû³Æ
      */
     @Column(name = "RELATIONSHIP_NAME")
     private String relationshipName;
 
     /**
-     * å®‰å…¨ç»„æ ‡è¯†  (å½“äº‹äººä¸ºæœºæ„æ—¶ç”¨)
+     * °²È«×é±êÊ¶  (µ±ÊÂÈËÎª»ú¹¹Ê±ÓÃ)
      */
     @Column(name = "SECURITY_GROUP_ID")
     private String securityGroupId;
 
     /**
-     * ä¼˜å…ˆç±»å‹æ ‡è¯†
+     * ÓÅÏÈÀàĞÍ±êÊ¶
      */
     @Column(name = "PRIORITY_TYPE_ID")
     private String priorityTypeId;
 
     /**
-     * å½“äº‹äººå…³ç³»ç±»å‹æ ‡è¯†
+     * µ±ÊÂÈË¹ØÏµÀàĞÍ±êÊ¶
      */
     @Column(name = "PARTY_RELATIONSHIP_TYPE_ID")
     private String partyRelationshipTypeId;
 
     /**
-     * æƒé™æšä¸¾æ ‡è¯†
+     * È¨ÏŞÃ¶¾Ù±êÊ¶
      */
     @Column(name = "PERMISSIONS_ENUM_ID")
     private String permissionsEnumId;
 
     /**
-     * èŒä½å¤´è¡”
+     * Ö°Î»Í·ÏÎ
      */
     @Column(name = "POSITION_TITLE")
     private String positionTitle;

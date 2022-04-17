@@ -16,24 +16,34 @@ import org.springframework.http.ResponseEntity;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GenericResponse {
-	/** æ­£å¸¸çŠ¶æ€ç ï¼Œ0000ï¼Œ */
+	/** Õı³£×´Ì¬Âë£¬0000£¬ */
 	public static final String CODE_OK = "0000";
 	
-	/** å¼‚å¸¸æ€ç ï¼Œ9999 */
+	/** Òì³£Ì¬Âë£¬9999 */
 	public static final String CODE_NG = "9999";
+
+	/** token¹ıÆÚ£¬1001 */
+	public static final String TOKEN_EXPIRED = "1001";
+
+	/** refreshtoken¹ıÆÚ£¬1002 */
+	public static final String REFRESH_TOKEN_EXPIRED = "1002";
+
+	/** Ç©µ½Ê§°Ü*/
+	public static final String SIGN_NG = "2001";
 
 
 	/**
-	 * å“åº”ç 
+	 * ÏìÓ¦Âë
 	 */
-	@ApiModelProperty(name = "code", value = "å“åº”ç ", required=true, position=0)
+	@ApiModelProperty(name = "code", value = "ÏìÓ¦Âë", required=true, position=0)
 	@JsonProperty("code")
 	private String code;
 
+
 	/**
-	 * æç¤ºæ¶ˆæ¯
+	 * ÌáÊ¾ÏûÏ¢
 	 */
-	@ApiModelProperty(name = "msg", value = "æç¤ºæ¶ˆæ¯", position=1)
+	@ApiModelProperty(name = "msg", value = "ÌáÊ¾ÏûÏ¢", position=1)
 	@JsonProperty("msg")
 	private String msg;
 	
@@ -72,4 +82,18 @@ public class GenericResponse {
 		GenericResponse resp = new GenericResponse(code,msg);
 		return ResponseEntity.ok(resp);
 	}
+
+
+	public static final ResponseEntity<?> tokenExpired(String msg) {
+		GenericResponse resp = new GenericResponse(TOKEN_EXPIRED);
+		resp.setMsg(msg);
+		return ResponseEntity.ok(resp);
+	}
+
+	public static final ResponseEntity<?> signNg(String msg) {
+		GenericResponse resp = new GenericResponse(SIGN_NG);
+		resp.setMsg(msg);
+		return ResponseEntity.ok(resp);
+	}
+
 }

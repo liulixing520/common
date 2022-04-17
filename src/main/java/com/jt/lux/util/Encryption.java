@@ -14,7 +14,7 @@ public class Encryption {
 
 
     /**
-     * ç”Ÿæˆç›(128ä¸ªå­—ç¬¦)  ç›çš„é•¿åº¦åº”è¯¥ç­‰åŒäºåŠ å¯†åå­—ç¬¦ä¸²çš„é•¿åº¦
+     * Éú³ÉÑÎ(128¸ö×Ö·û)  ÑÎµÄ³¤¶ÈÓ¦¸ÃµÈÍ¬ÓÚ¼ÓÃÜºó×Ö·û´®µÄ³¤¶È
      * @return
      */
     public String createSalt() {
@@ -32,7 +32,7 @@ public class Encryption {
 
 
     /**
-     * SHA512åŠ å¯†(128ä¸ªå­—ç¬¦)
+     * SHA512¼ÓÃÜ(128¸ö×Ö·û)
      * @param pwd
      * @return
      */
@@ -59,7 +59,7 @@ public class Encryption {
         return shaPwd;
     }
 
-    /* æµ‹è¯•ç”¨
+    /* ²âÊÔÓÃ
         public static void main(String[] args) {
             String str = "test";
             Encryption en = new Encryption();

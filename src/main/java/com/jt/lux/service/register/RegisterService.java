@@ -1,32 +1,29 @@
 package com.jt.lux.service.register;
 
 import com.alibaba.fastjson.JSONObject;
-import com.jt.lux.entity.security.Party;
-import com.jt.lux.entity.security.Person;
-import com.jt.lux.entity.security.UserLogin;
+import com.jt.lux.entity.security.*;
 import com.jt.lux.exception.ServiceException;
-import com.jt.lux.mapper.security.PartyMapper;
-import com.jt.lux.mapper.security.PersonMapper;
-import com.jt.lux.mapper.security.UserLoginMapper;
+import com.jt.lux.mapper.security.*;
 import com.jt.lux.util.Encryption;
-import com.jt.lux.util.GenericDataResponse;
-import com.jt.lux.util.IdGenerator;
+import com.jt.lux.util.OSSClientUtil;
+import com.jt.lux.util.idg.DefaultUidGenerator;
 import com.jt.lux.vo.common.RegisterVO;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 /**
- * @ÊèèËø∞Ôºö Ê≥®ÂÜå
- * @‰ΩúËÄÖÔºö lux
- * @ÂàõÂª∫Êó•ÊúüÔºö 2020-8-31 15:28
- * @ÁâàÊùÉÔºö Ê±üÊ≥∞‰øùÈô©ÁªèÁ∫™ËÇ°‰ªΩÊúâÈôêÂÖ¨Âè∏
+ * @√Ë ˆ£∫ ◊¢≤·
+ * @◊˜’ﬂ£∫ lux
+ * @¥¥Ω®»’∆⁄£∫ 2020-8-31 15:28
+
  */
 @Service
 public class RegisterService {
@@ -37,8 +34,9 @@ public class RegisterService {
     @Autowired
     private UserLoginMapper userLoginMapper;
 
+
     @Autowired
-    private IdGenerator idg;
+    private DefaultUidGenerator idg;
 
     @Autowired
     private PartyMapper partyMapper;
@@ -46,35 +44,36 @@ public class RegisterService {
     @Autowired
     private PersonMapper personMapper;
 
+    @Autowired
+    private PartyRoleMapper roleMapper;
+
+    @Autowired
+    private UserLoginSecurityGroupMapper userLoginSecurityGroupMapper;
+
+    @Autowired
+    private OSSClientUtil ossClientUtil;
+
     /**
-     * Ê≥®ÂÜå
+     * ◊¢≤·
      * @param vo
      * @param request
      * @return
      */
-    public ResponseEntity<GenericDataResponse<UserLogin>> register(RegisterVO vo, HttpServletRequest request){
+    @Transactional
+    public UserLogin register(RegisterVO vo, HttpServletRequest request){
         log.info("register:{}", JSONObject.toJSON(vo).toString());
         UserLogin userLogin = new UserLogin();
-        Person person = new Person();
-        if(StringUtils.isNotBlank(vo.getPhoneNum())){
-            person.setMobileNum(vo.getPhoneNum());
-        }
-        if(StringUtils.isNotBlank(vo.getOpenid())){
-            person.setOpenId(vo.getOpenid());
-        }
-
-        //ÂàõÂª∫personÁî®Êà∑
-        createPerson(person);
-
-
-        if(StringUtils.isNotBlank(vo.getPassWord())){
-            userLogin.setCurrentPassword(vo.getPassWord());
-        }
-        userLogin.setPartyId(person.getPartyId());
-        //ÂàõÂª∫ÁôªÈôÜË¥¶Êà∑
+        String partyId = "P"+idg.nextStrId();
+        //¥¥Ω®µ«¬Ω’Àªß
+        userLogin.setMobileNum(vo.getPhoneNum());
+        userLogin.setPartyId(partyId);
+        userLogin.setCurrentPassword(vo.getPassWord());
+        userLogin.setOpenid(vo.getOpenid());
+        userLogin.setEnabled("Y");
         createUserLogin(userLogin);
-
-        return GenericDataResponse.okWithData(userLogin);
+        //¥¥Ω®party
+        createParty(partyId);
+        return userLogin;
     }
 
     public UserLogin createUserLogin(UserLogin userLogin){
@@ -84,35 +83,120 @@ public class RegisterService {
             String encryPassword = new SimpleHash("MD5", password, salt, 1024).toString();
             userLogin.setSalt(salt);
             userLogin.setCurrentPassword(encryPassword);
+            userLogin.setIsSystem("Y");
         }
-        userLogin.setUserLoginId("U"+idg.nextId());
+        userLogin.setStatusAuth("U");//Œ¥»œ÷§
+        userLogin.setUserLoginId(idg.nextStrId());
+        userLogin.setLastUpdatedStamp(new Date());
+        userLogin.setLastUpdatedTxStamp(new Date());
+        userLogin.setCreatedStamp(new Date());
+        userLogin.setCreatedTxStamp(new Date());
         int n = userLoginMapper.insert(userLogin);
         if(n == 0 ){
-            log.error("Ê≥®ÂÜåUserLoginÂ§±Ë¥•{}",userLogin.getPartyId());
-            throw new ServiceException("Ê≥®ÂÜåÂ§±Ë¥•");
+            log.error("◊¢≤·UserLogin ß∞‹{}",userLogin.getPartyId());
+            throw new ServiceException("◊¢≤· ß∞‹");
         }
         return userLogin;
     }
 
-    public Person createPerson(Person person){
-
+    public void createParty(String partyId){
         Party party = new Party();
-        party.setPartyTypeId("PERSON");
+        party.setPartyId(partyId);
         party.setStatusId("PARTY_ENABLED");
-        int n = partyMapper.insertParty(party);
+        party.setCreatedStamp(new Date());
+        party.setCreatedDate(new Date());
+        party.setLastUpdatedStamp(new Date());
+        party.setLastModifiedDate(new Date());
+        party.setIsOpenAccount("N");
+        int n = partyMapper.insert(party);
         if(n == 0 ){
-            log.error("Ê≥®ÂÜåpartyÂ§±Ë¥•{}",party.getPartyId());
-            throw new ServiceException("Ê≥®ÂÜåÂ§±Ë¥•");
+            log.error("◊¢≤·party ß∞‹{}",partyId);
+            throw new ServiceException("◊¢≤· ß∞‹");
+        }
+    }
+
+    /**
+     * ¥¥Ω®∏ˆ»À
+     * @param person
+     * @return
+     */
+    public Person createPerson(Person person){
+        String partyId = person.getPartyId();
+        Party party = new Party();
+        party.setStatusId("PARTY_ENABLED");
+        party.setPartyId(partyId);
+        party.setPartyTypeId("PERSON");
+        int n = partyMapper.updateByPrimaryKeySelective(party);
+        if(n == 0 ){
+            log.error("◊¢≤·party ß∞‹{}",party.getPartyId());
+            throw new ServiceException("◊¢≤· ß∞‹");
         }
 
         person.setPartyId(party.getPartyId());
+        person.setLastUpdatedStamp(new Date());
+        person.setLastUpdatedTxStamp(new Date());
+        person.setCreatedStamp(new Date());
+        person.setCreatedTxStamp(new Date());
         n = personMapper.insert(person);
         if(n == 0 ){
-            log.error("Ê≥®ÂÜåpersonÂ§±Ë¥•{}",person.getPartyId());
-            throw new ServiceException("Ê≥®ÂÜåÂ§±Ë¥•");
+            log.error("◊¢≤·person ß∞‹{}",person.getPartyId());
+            throw new ServiceException("◊¢≤· ß∞‹");
         }
+        PartyRole role = new PartyRole();
+        role.setPartyId(partyId);
+        role.setRoleTypeId("EMPLOYEE");//‘±π§
+        role.setCreatedStamp(new Date());
+        roleMapper.insert(role);
         return person;
     }
+
+
+    /**
+     * ¥¥Ω®œµÕ≥π‹¿Ì‘±
+     * @return
+     */
+    public void createSystemManager(Person person){
+        String partyId = person.getPartyId();
+        Party party = new Party();
+        party.setStatusId("PARTY_ENABLED");
+        party.setPartyId(partyId);
+        party.setCreatedStamp(new Date());
+        party.setCreatedDate(new Date());
+        int n = partyMapper.updateByPrimaryKeySelective(party);
+        if(n == 0 ){
+            log.error("◊¢≤·party ß∞‹{}",party.getPartyId());
+            throw new ServiceException("◊¢≤· ß∞‹");
+        }
+        person.setPartyId(party.getPartyId());
+        person.setLastUpdatedStamp(new Date());
+        person.setLastUpdatedTxStamp(new Date());
+        person.setCreatedStamp(new Date());
+        person.setCreatedTxStamp(new Date());
+        n = personMapper.insert(person);
+        if(n == 0 ){
+            log.error("◊¢≤·person ß∞‹{}",person.getPartyId());
+            throw new ServiceException("◊¢≤· ß∞‹");
+        }
+
+        PartyRole role = new PartyRole();
+        role.setPartyId(partyId);
+        role.setRoleTypeId("MANAGER");//œµÕ≥π‹¿Ì‘±
+        role.setCreatedStamp(new Date());
+        roleMapper.insert(role);
+
+        UserLogin login = new UserLogin() ;
+        login.setPartyId(partyId);
+        login = userLoginMapper.selectOne(login);
+        UserLoginSecurityGroup group = new UserLoginSecurityGroup();
+        group.setGroupId("GROUP_SYSTEM");
+        group.setUserLoginId(login.getUserLoginId());
+        group.setCreatedStamp(new Date());
+        group.setFromDate(new Date());
+        userLoginSecurityGroupMapper.insert(group);
+
+    }
+
+
 
 
 }

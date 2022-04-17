@@ -28,62 +28,60 @@ public class ShiroConfig {
 
 
     /**
-     * ShiroFilterFactoryBean å¤„ç†æ‹¦æˆªèµ„æºæ–‡ä»¶é—®é¢˜ã€‚
-     * æ³¨æ„ï¼šå•ç‹¬ä¸€ä¸ªShiroFilterFactoryBeané…ç½®æ˜¯æˆ–æŠ¥é”™çš„ï¼Œä»¥ä¸ºåœ¨
-     * åˆå§‹åŒ–ShiroFilterFactoryBeançš„æ—¶å€™éœ€è¦æ³¨å…¥ï¼šSecurityManager
+     * ShiroFilterFactoryBean ´¦ÀíÀ¹½Ø×ÊÔ´ÎÄ¼şÎÊÌâ¡£
+     * ×¢Òâ£ºµ¥¶ÀÒ»¸öShiroFilterFactoryBeanÅäÖÃÊÇ»ò±¨´íµÄ£¬ÒÔÎªÔÚ
+     * ³õÊ¼»¯ShiroFilterFactoryBeanµÄÊ±ºòĞèÒª×¢Èë£ºSecurityManager
      * <p>
-     * Filter Chainå®šä¹‰è¯´æ˜ 1ã€ä¸€ä¸ªURLå¯ä»¥é…ç½®å¤šä¸ªFilterï¼Œä½¿ç”¨é€—å·åˆ†éš” 2ã€å½“è®¾ç½®å¤šä¸ªè¿‡æ»¤å™¨æ—¶ï¼Œå…¨éƒ¨éªŒè¯é€šè¿‡ï¼Œæ‰è§†ä¸ºé€šè¿‡
-     * 3ã€éƒ¨åˆ†è¿‡æ»¤å™¨å¯æŒ‡å®šå‚æ•°ï¼Œå¦‚permsï¼Œroles
+     * Filter Chain¶¨ÒåËµÃ÷ 1¡¢Ò»¸öURL¿ÉÒÔÅäÖÃ¶à¸öFilter£¬Ê¹ÓÃ¶ººÅ·Ö¸ô 2¡¢µ±ÉèÖÃ¶à¸ö¹ıÂËÆ÷Ê±£¬È«²¿ÑéÖ¤Í¨¹ı£¬²ÅÊÓÎªÍ¨¹ı
+     * 3¡¢²¿·Ö¹ıÂËÆ÷¿ÉÖ¸¶¨²ÎÊı£¬Èçperms£¬roles
      */
     @Bean
     public ShiroFilterFactoryBean shirFilter(SecurityManager securityManager, @Value("${spring.redis.host}") String host, @Value("${spring.redis.password}") String password) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
-        // å¿…é¡»è®¾ç½® SecurityManager
+        // ±ØĞëÉèÖÃ SecurityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        // å¦‚æœä¸è®¾ç½®é»˜è®¤ä¼šè‡ªåŠ¨å¯»æ‰¾Webå·¥ç¨‹æ ¹ç›®å½•ä¸‹çš„"/login.jsp"é¡µé¢
-        //è®¿é—®çš„æ˜¯åç«¯urlåœ°å€ä¸º /loginçš„æ¥å£
+        // Èç¹û²»ÉèÖÃÄ¬ÈÏ»á×Ô¶¯Ñ°ÕÒWeb¹¤³Ì¸ùÄ¿Â¼ÏÂµÄ"/login.jsp"Ò³Ãæ
+        //·ÃÎÊµÄÊÇºó¶ËurlµØÖ·Îª /loginµÄ½Ó¿Ú
         shiroFilterFactoryBean.setLoginUrl("/login");
-        // ç™»å½•æˆåŠŸåè¦è·³è½¬çš„é“¾æ¥
+        // µÇÂ¼³É¹¦ºóÒªÌø×ªµÄÁ´½Ó
         shiroFilterFactoryBean.setSuccessUrl("/index");
-        // æœªæˆæƒç•Œé¢;
+        // Î´ÊÚÈ¨½çÃæ;
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
-        // æ‹¦æˆªå™¨.
+        // À¹½ØÆ÷.
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
-        // é…ç½®ä¸ä¼šè¢«æ‹¦æˆªçš„é“¾æ¥ é¡ºåºåˆ¤æ–­
+        // ÅäÖÃ²»»á±»À¹½ØµÄÁ´½Ó Ë³ĞòÅĞ¶Ï
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/swagger-ui.html#", "anon");
         filterChainDefinitionMap.put("/api/v1/**", "anon");
         filterChainDefinitionMap.put("/api/v2/**", "anon");
 
-        // é…ç½®é€€å‡ºè¿‡æ»¤å™¨,å…¶ä¸­çš„å…·ä½“çš„é€€å‡ºä»£ç Shiroå·²ç»æ›¿æˆ‘ä»¬å®ç°äº†,åŠ ä¸Šè¿™ä¸ªä¼šå¯¼è‡´302ï¼Œè¯·æ±‚é‡ç½®ï¼Œæš‚ä¸æ˜ç™½åŸå› 
+        // ÅäÖÃÍË³ö¹ıÂËÆ÷,ÆäÖĞµÄ¾ßÌåµÄÍË³ö´úÂëShiroÒÑ¾­ÌæÎÒÃÇÊµÏÖÁË,¼ÓÉÏÕâ¸ö»áµ¼ÖÂ302£¬ÇëÇóÖØÖÃ£¬Ôİ²»Ã÷°×Ô­Òò
         //filterChainDefinitionMap.put("/logout", "logout");
-        //é…ç½®æŸä¸ªurléœ€è¦æŸä¸ªæƒé™ç 
+        //ÅäÖÃÄ³¸öurlĞèÒªÄ³¸öÈ¨ÏŞÂë
         //filterChainDefinitionMap.put("/hello", "perms[how_are_you]");
-        // è¿‡æ»¤é“¾å®šä¹‰ï¼Œä»ä¸Šå‘ä¸‹é¡ºåºæ‰§è¡Œï¼Œä¸€èˆ¬å°† /**æ”¾åœ¨æœ€ä¸ºä¸‹è¾¹
-        // <!-- authc:æ‰€æœ‰urléƒ½å¿…é¡»è®¤è¯é€šè¿‡æ‰å¯ä»¥è®¿é—®; anon:æ‰€æœ‰urléƒ½éƒ½å¯ä»¥åŒ¿åè®¿é—®;user:remember meçš„å¯ä»¥è®¿é—®-->
+        // ¹ıÂËÁ´¶¨Òå£¬´ÓÉÏÏòÏÂË³ĞòÖ´ĞĞ£¬Ò»°ã½« /**·ÅÔÚ×îÎªÏÂ±ß
+        // <!-- authc:ËùÓĞurl¶¼±ØĞëÈÏÖ¤Í¨¹ı²Å¿ÉÒÔ·ÃÎÊ; anon:ËùÓĞurl¶¼¶¼¿ÉÒÔÄäÃû·ÃÎÊ;user:remember meµÄ¿ÉÒÔ·ÃÎÊ-->
         filterChainDefinitionMap.put("/fine", "user");
-        filterChainDefinitionMap.put("/user-svc/**", "authc");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
-        System.out.println("Shiroæ‹¦æˆªå™¨å·¥å‚ç±»æ³¨å…¥æˆåŠŸ");
         return shiroFilterFactoryBean;
     }
 
     /**
-     * è‡ªå®šä¹‰Realmåˆ›å»º
+     * ×Ô¶¨ÒåRealm´´½¨
      *
      * @return
      */
     @Bean
     public MyShiroRealm myShiroRealm(CredentialsMatcher credentialsMatcher) {
         MyShiroRealm myShiroRealm = new MyShiroRealm();
-        //å°†è‡ªå®šä¹‰çš„ä»¤ç‰Œsetåˆ°äº†Realm
+        //½«×Ô¶¨ÒåµÄÁîÅÆsetµ½ÁËRealm
         myShiroRealm.setCredentialsMatcher(credentialsMatcher);
         return myShiroRealm;
     }
 
     /**
-     * äº¤ç”±SecurityManageç®¡ç†
+     * ½»ÓÉSecurityManage¹ÜÀí
      *
      * @return
      */
@@ -92,17 +90,17 @@ public class ShiroConfig {
     public SecurityManager securityManager(CredentialsMatcher credentialsMatcher, @Value("${spring.redis.host}") String host, @Value("${spring.redis.password}") String password) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(myShiroRealm(credentialsMatcher));
-//        // è‡ªå®šä¹‰ç¼“å­˜å®ç° ä½¿ç”¨redis
-//        securityManager.setCacheManager(cacheManager(host, password));
-//        // è‡ªå®šä¹‰sessionç®¡ç† ä½¿ç”¨redis
-//        securityManager.setSessionManager(sessionManager(host, password));
-        //æ³¨å…¥è®°ä½æˆ‘ç®¡ç†å™¨;
+        // ×Ô¶¨Òå»º´æÊµÏÖ Ê¹ÓÃredis
+        securityManager.setCacheManager(cacheManager(host, password));
+        // ×Ô¶¨Òåsession¹ÜÀí Ê¹ÓÃredis
+        securityManager.setSessionManager(sessionManager(host, password));
+        //×¢Èë¼Ç×¡ÎÒ¹ÜÀíÆ÷;
         securityManager.setRememberMeManager(rememberMeManager());
         return securityManager;
     }
 
     /**
-     * åŠŸèƒ½å¢å¼º
+     * ¹¦ÄÜÔöÇ¿
      *
      * @param cacheManager
      * @return
@@ -110,21 +108,21 @@ public class ShiroConfig {
     @Bean(name = "credentialsMatcher")
     public CredentialsMatcher credentialsMatcher(CacheManager cacheManager) {
         RetryLimitHashedCredentialsMatcher credentialsMatcher = new RetryLimitHashedCredentialsMatcher(cacheManager);
-        //åŠ å¯†æ–¹å¼
+        //¼ÓÃÜ·½Ê½
         credentialsMatcher.setHashAlgorithmName("MD5");
-        //åŠ å¯†è¿­ä»£æ¬¡æ•°
+        //¼ÓÃÜµü´ú´ÎÊı
         credentialsMatcher.setHashIterations(1024);
-        //trueåŠ å¯†ç”¨çš„hexç¼–ç ï¼Œfalseç”¨çš„base64ç¼–ç 
+        //true¼ÓÃÜÓÃµÄhex±àÂë£¬falseÓÃµÄbase64±àÂë
         credentialsMatcher.setStoredCredentialsHexEncoded(true);
-        //é‡æ–°å°è¯•çš„æ¬¡æ•°ï¼ˆè‡ªå·±å®šä¹‰çš„ï¼‰
+        //ÖØĞÂ³¢ÊÔµÄ´ÎÊı£¨×Ô¼º¶¨ÒåµÄ£©
         credentialsMatcher.setRetryMax(5);
         return credentialsMatcher;
     }
 
 
     /**
-     * é…ç½®shiro redisManager
-     * ç½‘ä¸Šçš„ä¸€ä¸ª shiro-redis æ’ä»¶ï¼Œå®ç°äº†shiroçš„cacheæ¥å£ã€CacheManageræ¥å£å°±
+     * ÅäÖÃshiro redisManager
+     * ÍøÉÏµÄÒ»¸ö shiro-redis ²å¼ş£¬ÊµÏÖÁËshiroµÄcache½Ó¿Ú¡¢CacheManager½Ó¿Ú¾Í
      *
      * @return
      */
@@ -133,15 +131,15 @@ public class ShiroConfig {
         RedisManager redisManager = new RedisManager();
         redisManager.setHost(host);
         redisManager.setPort(6379);
-        redisManager.setExpire(18000);// é…ç½®è¿‡æœŸæ—¶é—´
+        redisManager.setExpire(18000);// ÅäÖÃ¹ıÆÚÊ±¼ä
         redisManager.setPassword(password);
         // redisManager.setTimeout(timeout);
         return redisManager;
     }
 
     /**
-     * cacheManager ç¼“å­˜ rediså®ç°
-     * ç½‘ä¸Šçš„ä¸€ä¸ª shiro-redis æ’ä»¶
+     * cacheManager »º´æ redisÊµÏÖ
+     * ÍøÉÏµÄÒ»¸ö shiro-redis ²å¼ş
      *
      * @return
      */
@@ -154,7 +152,7 @@ public class ShiroConfig {
 
 
     /**
-     * RedisSessionDAO shiro sessionDaoå±‚çš„å®ç° é€šè¿‡redis
+     * RedisSessionDAO shiro sessionDao²ãµÄÊµÏÖ Í¨¹ıredis
      */
     public RedisSessionDAO redisSessionDAO(@Value("${spring.redis.host}") String host, @Value("${spring.redis.password}") String password) {
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
@@ -163,7 +161,7 @@ public class ShiroConfig {
     }
 
     /**
-     * shiro sessionçš„ç®¡ç†
+     * shiro sessionµÄ¹ÜÀí
      */
     public DefaultWebSessionManager sessionManager(@Value("${spring.redis.host}") String host, @Value("${spring.redis.password}") String password) {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
@@ -175,16 +173,16 @@ public class ShiroConfig {
     public SimpleCookie rememberMeCookie() {
 
         System.out.println("ShiroConfiguration.rememberMeCookie()");
-        //è¿™ä¸ªå‚æ•°æ˜¯cookieçš„åç§°ï¼Œå¯¹åº”å‰ç«¯çš„checkboxçš„name = rememberMe
+        //Õâ¸ö²ÎÊıÊÇcookieµÄÃû³Æ£¬¶ÔÓ¦Ç°¶ËµÄcheckboxµÄname = rememberMe
         SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
-        //<!-- è®°ä½æˆ‘cookieç”Ÿæ•ˆæ—¶é—´30å¤© ,å•ä½ç§’;-->
+        //<!-- ¼Ç×¡ÎÒcookieÉúĞ§Ê±¼ä30Ìì ,µ¥Î»Ãë;-->
         simpleCookie.setMaxAge(259200);
         simpleCookie.setHttpOnly(true);
         return simpleCookie;
     }
 
     /**
-     * cookieç®¡ç†å¯¹è±¡;
+     * cookie¹ÜÀí¶ÔÏó;
      *
      * @return
      */
@@ -199,7 +197,7 @@ public class ShiroConfig {
     }
 
     /**
-     * Shiroç”Ÿå‘½å‘¨æœŸå¤„ç†å™¨
+     * ShiroÉúÃüÖÜÆÚ´¦ÀíÆ÷
      *
      * @return
      */
@@ -209,8 +207,8 @@ public class ShiroConfig {
     }
 
     /**
-     * å¼€å¯Shiroçš„æ³¨è§£(å¦‚@RequiresRoles,@RequiresPermissions),éœ€å€ŸåŠ©SpringAOPæ‰«æä½¿ç”¨Shiroæ³¨è§£çš„ç±»,å¹¶åœ¨å¿…è¦æ—¶è¿›è¡Œå®‰å…¨é€»è¾‘éªŒè¯
-     * é…ç½®ä»¥ä¸‹ä¸¤ä¸ªbean(DefaultAdvisorAutoProxyCreator(å¯é€‰)å’ŒAuthorizationAttributeSourceAdvisor)å³å¯å®ç°æ­¤åŠŸèƒ½
+     * ¿ªÆôShiroµÄ×¢½â(Èç@RequiresRoles,@RequiresPermissions),Ğè½èÖúSpringAOPÉ¨ÃèÊ¹ÓÃShiro×¢½âµÄÀà,²¢ÔÚ±ØÒªÊ±½øĞĞ°²È«Âß¼­ÑéÖ¤
+     * ÅäÖÃÒÔÏÂÁ½¸öbean(DefaultAdvisorAutoProxyCreator(¿ÉÑ¡)ºÍAuthorizationAttributeSourceAdvisor)¼´¿ÉÊµÏÖ´Ë¹¦ÄÜ
      *
      * @return
      */
@@ -230,7 +228,7 @@ public class ShiroConfig {
         kickoutSessionFilter.setSessionManager(sessionManager(host, password));
         kickoutSessionFilter.setKickoutAfter(false);
         kickoutSessionFilter.setMaxSession(1);
-        //è¢«è¸¢å‡ºåé‡å®šå‘åˆ°çš„åœ°å€ï¼›
+        //±»Ìß³öºóÖØ¶¨Ïòµ½µÄµØÖ·£»
         //kickoutSessionFilter.setKickoutUrl("/toLogin?kickout=1");
         return kickoutSessionFilter;
     }*/

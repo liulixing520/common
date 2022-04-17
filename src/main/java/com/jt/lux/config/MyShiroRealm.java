@@ -3,7 +3,6 @@ package com.jt.lux.config;
 
 import com.jt.lux.entity.security.UserLogin;
 import com.jt.lux.exception.PassWordExpiredException;
-import com.jt.lux.exception.ServiceException;
 import com.jt.lux.mapper.security.UserLoginMapper;
 import com.jt.lux.util.Constants;
 import lombok.extern.slf4j.Slf4j;
@@ -32,8 +31,9 @@ public class MyShiroRealm extends AuthorizingRealm{
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		SimpleAuthorizationInfo simpleAuthorInfo = new SimpleAuthorizationInfo();
-		
-		return null;
+		//»ñÈ¡username
+		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+		return info;
 	}
 
 	@Override
@@ -43,28 +43,28 @@ public class MyShiroRealm extends AuthorizingRealm{
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
 		String userName = token.getUsername();
-		UserLogin userLogin = userLoginMapper.selectByPrimaryKey(userName);
+		UserLogin userLogin = userLoginMapper.findByMobileNum(userName);
 		if(userLogin == null){
-			log.warn(Constants.USER_IS_NOT_EXIST+"userNameï¼š{}",userName);
+			log.warn(Constants.USER_IS_NOT_EXIST+"userName£º{}",userName);
 			throw new AuthenticationException(Constants.USER_IS_NOT_EXIST);
 		}
 
-		if(new Date().compareTo(userLogin.getDisabledDateTime())>0){
-			log.warn(Constants.PASSWORD_EXPIRED+"userNameï¼š{}",userName);
+		if(userLogin.getDisabledDateTime() !=null && new Date().compareTo(userLogin.getDisabledDateTime())>0){
+			log.warn(Constants.PASSWORD_EXPIRED+"userName£º{}",userName);
 			throw new PassWordExpiredException(Constants.PASSWORD_EXPIRED);
 		}
 
 		ByteSource credentialsSalt = ByteSource.Util.bytes(userLogin.getSalt());
 		AuthenticationInfo authcInfo=new SimpleAuthenticationInfo(userLogin, userLogin.getCurrentPassword(),credentialsSalt, this.getName());
 
-		//æ¸…ç¼“å­˜ä¸­çš„æˆæƒä¿¡æ¯ï¼Œä¿è¯æ¯æ¬¡ç™»é™† éƒ½å¯ä»¥é‡æ–°æˆæƒã€‚å› ä¸ºAuthorizingRealmä¼šå…ˆæ£€æŸ¥ç¼“å­˜æœ‰æ²¡æœ‰ æˆæƒä¿¡æ¯ï¼Œå†è°ƒç”¨æˆæƒæ–¹æ³•
+		//Çå»º´æÖĞµÄÊÚÈ¨ĞÅÏ¢£¬±£Ö¤Ã¿´ÎµÇÂ½ ¶¼¿ÉÒÔÖØĞÂÊÚÈ¨¡£ÒòÎªAuthorizingRealm»áÏÈ¼ì²é»º´æÓĞÃ»ÓĞ ÊÚÈ¨ĞÅÏ¢£¬ÔÙµ÷ÓÃÊÚÈ¨·½·¨
 		super.clearCachedAuthorizationInfo(authcInfo.getPrincipals());
 
-		SecurityUtils.getSubject().getSession().setAttribute("login", userLogin);
+		SecurityUtils.getSubject().getSession().setAttribute(Constants.LOGIN, userLogin);
 		
 		return authcInfo;
-		//è¿”å›ç»™å®‰å…¨ç®¡ç†å™¨ï¼ŒsecurityManagerï¼Œç”±securityManageræ¯”å¯¹æ•°æ®åº“æŸ¥è¯¢å‡ºçš„å¯†ç å’Œé¡µé¢æäº¤çš„å¯†ç 
-		//å¦‚æœæœ‰é—®é¢˜ï¼Œå‘ä¸ŠæŠ›å¼‚å¸¸ï¼Œä¸€ç›´æŠ›åˆ°æ§åˆ¶å™¨
+		//·µ»Ø¸ø°²È«¹ÜÀíÆ÷£¬securityManager£¬ÓÉsecurityManager±È¶ÔÊı¾İ¿â²éÑ¯³öµÄÃÜÂëºÍÒ³ÃæÌá½»µÄÃÜÂë
+		//Èç¹ûÓĞÎÊÌâ£¬ÏòÉÏÅ×Òì³££¬Ò»Ö±Å×µ½¿ØÖÆÆ÷
 	}
 
 }

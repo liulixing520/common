@@ -1,60 +1,78 @@
 package com.jt.lux.util;
 
 /**
- * @æè¿°ï¼š å¸¸é‡
- * @ä½œè€…ï¼š lux
- * @åˆ›å»ºæ—¥æœŸï¼š 2018-7-28 14:52
- * @ç‰ˆæƒï¼š æ±Ÿæ³°ä¿é™©ç»çºªè‚¡ä»½æœ‰é™å…¬å¸
+ * @ÃèÊö£º ³£Á¿
+ * @×÷Õß£º lux
+ * @´´½¨ÈÕÆÚ£º 2018-7-28 14:52
+
  */
 public class Constants {
 
     /**
-     * æ‰‹æœºå·ä¸èƒ½ä¸ºç©º
+     * ÊÖ»úºÅ²»ÄÜÎª¿Õ
      */
-    public static final String PHONE_NUM_IS_NULL = "æ‰‹æœºå·ä¸èƒ½ä¸ºç©º";
+    public static final String PHONE_NUM_IS_NULL = "ÊÖ»úºÅ²»ÄÜÎª¿Õ";
 	/**
-	 * ç™»å½•è´¦å·ä¸èƒ½ä¸ºç©º
+	 * µÇÂ¼ÕËºÅ²»ÄÜÎª¿Õ
 	 */
-	public static final String USER_NAME_IS_NULL = "ç™»å½•è´¦å·ä¸èƒ½ä¸ºç©º";
+	public static final String USER_NAME_IS_NULL = "µÇÂ¼ÕËºÅ²»ÄÜÎª¿Õ";
 	/**
-	 * å¯†ç ä¸èƒ½ä¸ºç©º
+	 * ÃÜÂë²»ÄÜÎª¿Õ
 	 */
-	public static final String PASSWORD_IS_NULL = "å¯†ç ä¸èƒ½ä¸ºç©º";
+	public static final String PASSWORD_IS_NULL = "ÃÜÂë²»ÄÜÎª¿Õ";
 
 	/**
-	 * ç™»å½•è´¦å·ä¸å­˜åœ¨
+	 * µÇÂ¼ÕËºÅ²»´æÔÚ
 	 */
-	public static final String USER_IS_NOT_EXIST = "ç™»å½•è´¦å·ä¸å­˜åœ¨";
+	public static final String USER_IS_NOT_EXIST = "µÇÂ¼ÕËºÅ²»´æÔÚ";
 
 	/**
-	 * å¯†ç å·²è¿‡æœŸ
+	 * ÃÜÂëÒÑ¹ıÆÚ
 	 */
-	public static final String PASSWORD_EXPIRED = "å¯†ç å·²è¿‡æœŸ";
+	public static final String PASSWORD_EXPIRED = "ÃÜÂëÒÑ¹ıÆÚ";
 
 	/**
-     * ç™»å½•å¤±è´¥
+     * µÇÂ¼Ê§°Ü
      */
-    public static final String LOGIN_FAIL = "è´¦å·æˆ–å¯†ç é”™è¯¯";
+    public static final String LOGIN_FAIL = "ÕËºÅ»òÃÜÂë´íÎó";
 
 	/**
-	 * æ‰‹æœºå·å·²å­˜åœ¨
+	 * ÊÖ»úºÅÒÑ´æÔÚ
 	 */
-	public static final String PHONENUM_ISEXIST = "æ‰‹æœºå·å·²å­˜åœ¨";
+	public static final String PHONENUM_ISEXIST = "ÊÖ»úºÅÒÑ´æÔÚ";
 
 	/**
-	 * è´¦å·å¯†ç ç™»å½•
+	 * ÕËºÅÃÜÂëµÇÂ¼
 	 */
-	public static final String LOGIN_TYPE_0 = "0";
+	public static final String LOGIN_TYPE_PASSWORD = "password";
 
 	/**
-	 * æ‰‹æœºå·ç™»å½•
+	 * ÊÖ»úºÅµÇÂ¼
 	 */
-	public static final String LOGIN_TYPE_1 = "1";
+	public static final String LOGIN_TYPE_PHONE = "phone";
 
 	/**
-	 * ç¬¬ä¸‰æ–¹ç™»å½•
+	 * session key
 	 */
-	public static final String LOGIN_TYPE_2 = "2";
+	public static final String LOGIN = "LOGIN";
+
+
+	/**
+	 * ¶ÌĞÅ·şÎñ
+	 */
+	public static  final String MOBILE_FAILD = "ÊÖ»úºÅ¸ñÊ½´íÎó£¬ÇëÖØĞÂÊäÈë!";
+
+	public static  final String MOBILE_IS_NOT_EXIST = "ÊÖ»úºÅÎ´×¢²á,ÇëÏÈÌí¼ÓÓÃ»§!";
+
+	public static  final String TIP_MSG ="¶ÌĞÅÑéÖ¤Âë·¢ËÍ´ÎÊı£¬ÒÑ³¬¹ıµ±ÈÕÏŞÖÆ";
+
+	public static  final String SEND_MSG_FAILD ="¶ÌĞÅ·¢ËÍÊ§°Ü£¬ÇëÁªÏµ¿ª·¢ÈËÔ±!";
+
+	public static  final String MSG_UPDATE_FAILD ="¶ÌĞÅĞÅÏ¢ĞŞ¸ÄÊ§°Ü";
+
+	public static  final String MSG_ADD_FAILD ="¶ÌĞÅĞÅÏ¢Ìí¼ÓÊ§°Ü";
+
+	public static  final String USER_UNCERTIFIED ="ÓÃ»§Î´ÈÏÖ¤»òÉóºËÉĞÎ´Í¨¹ı";
 
 
 }

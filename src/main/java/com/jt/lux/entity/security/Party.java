@@ -1,11 +1,19 @@
 package com.jt.lux.entity.security;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Date;
-import javax.persistence.*;
 
 /**
- * ÂΩì‰∫ã‰∫∫
+ * µ± ¬»À
  */
+@Data
 public class Party {
     @Id
     @Column(name = "PARTY_ID")
@@ -13,55 +21,127 @@ public class Party {
     private String partyId;
 
     /**
-     * ÂΩì‰∫ã‰∫∫Á±ªÂûã   PERSON:‰∏™‰∫∫
+     * µ± ¬»À¿‡–Õ   PERSON:∏ˆ»À  CORPORATION π´Àæ
      */
+    @ApiModelProperty("µ± ¬»À¿‡–Õ   PERSON:∏ˆ»À  CORPORATION π´Àæ  ")
     @Column(name = "PARTY_TYPE_ID")
     private String partyTypeId;
 
+    @JsonIgnore
     @Column(name = "EXTERNAL_ID")
     private String externalId;
 
+    @JsonIgnore
     @Column(name = "PREFERRED_CURRENCY_UOM_ID")
     private String preferredCurrencyUomId;
 
     /**
-     * Áä∂ÊÄÅid
+     * ◊¥Ã¨id
      */
+    @JsonIgnore
     @Column(name = "STATUS_ID")
     private String statusId;
+
+    /**
+     * –«º∂
+     */
+    @ApiModelProperty("–«º∂")
+    @Column(name = "STARS_NUM")
+    private String starsNum;
+
+    /**
+     * ∆¿º€ ˝
+     */
+    @ApiModelProperty("∆¿º€ ˝")
+    @Column(name = "EVALUATE_NUM")
+    private String evaluateNum;
+
+    /**
+     * ∑˛ŒÒ¥Œ ˝
+     */
+    @ApiModelProperty("∑˛ŒÒ¥Œ ˝")
+    @Column(name = "SERVICE_NUM")
+    private String serviceNum;
 
     @Column(name = "CREATED_DATE")
     private Date createdDate;
 
+    @JsonIgnore
     @Column(name = "CREATED_BY_USER_LOGIN")
     private String createdByUserLogin;
 
+    @JsonIgnore
     @Column(name = "LAST_MODIFIED_DATE")
     private Date lastModifiedDate;
 
+    @JsonIgnore
     @Column(name = "LAST_MODIFIED_BY_USER_LOGIN")
     private String lastModifiedByUserLogin;
 
+    @JsonIgnore
     @Column(name = "DATA_SOURCE_ID")
     private String dataSourceId;
 
+    @JsonIgnore
     @Column(name = "IS_UNREAD")
     private String isUnread;
 
+    @JsonIgnore
     @Column(name = "LAST_UPDATED_STAMP")
     private Date lastUpdatedStamp;
 
+    @JsonIgnore
     @Column(name = "LAST_UPDATED_TX_STAMP")
     private Date lastUpdatedTxStamp;
 
+    @JsonIgnore
     @Column(name = "CREATED_STAMP")
     private Date createdStamp;
 
+    @JsonIgnore
     @Column(name = "CREATED_TX_STAMP")
     private Date createdTxStamp;
 
+    @JsonIgnore
     @Column(name = "DESCRIPTION")
     private String description;
+
+    @ApiModelProperty("∂˛Œ¨¬ÎÕº∆¨")
+    @Column(name = "QR_CODE")
+    private String qrCode;
+
+    @ApiModelProperty(" «∑Ò“—ø™ªß  N:Œ¥ø™ªß  Y:“—ø™ªß")
+    @Column(name = "IS_OPEN_ACCOUNT")
+    private String isOpenAccount;
+
+    @ApiModelProperty("∏ˆÕ∆øÕªß∫≈")
+    @Column(name = "CLIENT_ID")
+    private String clientId;
+
+
+    public String getStarsNum() {
+        return starsNum;
+    }
+
+    public void setStarsNum(String starsNum) {
+        this.starsNum = starsNum;
+    }
+
+    public String getEvaluateNum() {
+        return evaluateNum;
+    }
+
+    public void setEvaluateNum(String evaluateNum) {
+        this.evaluateNum = evaluateNum;
+    }
+
+    public String getServiceNum() {
+        return serviceNum;
+    }
+
+    public void setServiceNum(String serviceNum) {
+        this.serviceNum = serviceNum;
+    }
 
     /**
      * @return PARTY_ID

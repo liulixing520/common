@@ -1,74 +1,64 @@
 package com.jt.lux.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.bind.RelaxedPropertyResolver;
-import org.springframework.context.EnvironmentAware;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.StopWatch;
+import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.service.*;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
-import static springfox.documentation.builders.PathSelectors.regex;
 
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig implements EnvironmentAware {
+public class SwaggerConfig {
 
-    private final Logger logger = LoggerFactory.getLogger(SwaggerConfig.class);
-    private static final String DEFAULT_INCLUDE_PATTERN = "/api/.*";
-    private RelaxedPropertyResolver propertyResolver;
-    @Override
-    public void setEnvironment(Environment environment) {
-        this.propertyResolver = new RelaxedPropertyResolver(environment, "swagger.");
-    }
+    public static final String SWAGGER_SCAN_BASE_PACKAGE = "com.jt.lux.controller";
+    public static final String VERSION = "1.0.0";
+    @Value("${swagger.enabled}")
+    private boolean enableSwagger;
 
     @Bean
-    public Docket swaggerSpringfoxDocket() {
-        logger.debug("Starting Swagger");
-        StopWatch watch = new StopWatch();
-        watch.start();
-        Docket swaggerSpringMvcPlugin = new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo())
-                .genericModelSubstitutes(ResponseEntity.class).select().paths(regex(DEFAULT_INCLUDE_PATTERN))
-                .build().securitySchemes(Collections.singletonList(apiKey()))
-                .groupName("G1")
-                .securityContexts(Collections.singletonList(securityContext()));
-        watch.stop();
-        logger.debug("Started Swagger in {} ms", watch.getTotalTimeMillis());
-        return swaggerSpringMvcPlugin;
+    public Docket createRestApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .pathMapping("/")
+                .select()
+                .apis(RequestHandlerSelectors.basePackage(SWAGGER_SCAN_BASE_PACKAGE))
+                .paths(PathSelectors.any())
+                .build()
+                //接口信息
+                .apiInfo(apiInfo())
+//                //全局参数
+//                .globalOperationParameters(getGlobalOperationParameters())
+                //全站统一参数token
+                .securitySchemes(authToken())
+                ;
     }
 
-    private ApiInfo apiInfo() {
-        logger.info("api docs title : " + propertyResolver.getProperty("title"));
-        return new ApiInfo(propertyResolver.getProperty("title"), propertyResolver.getProperty("description"),
-                propertyResolver.getProperty("version"), propertyResolver.getProperty("termsOfServiceUrl"),
-                new Contact("", "", ""), propertyResolver.getProperty("license"),
-                propertyResolver.getProperty("licenseUrl"), new ArrayList<>());
+    ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+                .title("Swagger API")
+                .description("This is to show api description")
+                .license("Apache 2.0")
+                .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
+                .termsOfServiceUrl("")
+                .version(VERSION)
+                .contact(new Contact("","", "miaorf@outlook.com"))
+                .build();
+    }
+    //全站统一参数配置，一般是token。
+    private  List<ApiKey> authToken() {
+        List<ApiKey> arrayList = new ArrayList();
+        arrayList.add(new ApiKey("Authorization", "Authorization", "header"));
+        return arrayList;
     }
 
-    private ApiKey apiKey() {
-        return new ApiKey("access_token", "Authorization", "header");
-    }
 
-    private SecurityContext securityContext() {
-        return SecurityContext.builder().securityReferences(defaultAuth())
-                .forPaths(PathSelectors.regex(DEFAULT_INCLUDE_PATTERN)).build();
-    }
-
-    List<SecurityReference> defaultAuth() {
-        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
-        return Collections
-                .singletonList(new SecurityReference("access_token", new AuthorizationScope[] { authorizationScope }));
-    }
 }

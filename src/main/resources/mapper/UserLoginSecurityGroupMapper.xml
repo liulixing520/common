@@ -1,17 +1,20 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.jt.lux.mapper.security.UserLoginSecurityGroupMapper" >
-  <resultMap id="BaseResultMap" type="com.jt.lux.entity.security.UserLoginSecurityGroup" >
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jt.lux.mapper.security.UserLoginSecurityGroupMapper">
+  <resultMap id="BaseResultMap" type="com.jt.lux.entity.security.UserLoginSecurityGroup">
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="USER_LOGIN_ID" property="userLoginId" jdbcType="VARCHAR" />
-    <id column="GROUP_ID" property="groupId" jdbcType="VARCHAR" />
-    <id column="FROM_DATE" property="fromDate" jdbcType="TIMESTAMP" />
-    <result column="THRU_DATE" property="thruDate" jdbcType="TIMESTAMP" />
-    <result column="LAST_UPDATED_STAMP" property="lastUpdatedStamp" jdbcType="TIMESTAMP" />
-    <result column="LAST_UPDATED_TX_STAMP" property="lastUpdatedTxStamp" jdbcType="TIMESTAMP" />
-    <result column="CREATED_STAMP" property="createdStamp" jdbcType="TIMESTAMP" />
-    <result column="CREATED_TX_STAMP" property="createdTxStamp" jdbcType="TIMESTAMP" />
+    <id column="USER_LOGIN_ID" jdbcType="VARCHAR" property="userLoginId" />
+    <id column="GROUP_ID" jdbcType="VARCHAR" property="groupId" />
+    <id column="FROM_DATE" jdbcType="TIMESTAMP" property="fromDate" />
+    <result column="THRU_DATE" jdbcType="TIMESTAMP" property="thruDate" />
+    <result column="LAST_UPDATED_STAMP" jdbcType="TIMESTAMP" property="lastUpdatedStamp" />
+    <result column="LAST_UPDATED_TX_STAMP" jdbcType="TIMESTAMP" property="lastUpdatedTxStamp" />
+    <result column="CREATED_STAMP" jdbcType="TIMESTAMP" property="createdStamp" />
+    <result column="CREATED_TX_STAMP" jdbcType="TIMESTAMP" property="createdTxStamp" />
   </resultMap>
+
+
+
 </mapper>

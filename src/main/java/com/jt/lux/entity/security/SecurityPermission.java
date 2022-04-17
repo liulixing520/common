@@ -1,15 +1,15 @@
 package com.jt.lux.entity.security;
 
-import java.util.Date;
 import javax.persistence.*;
+import java.util.Date;
 
 /**
- * 鏉冮檺
+ * 权限
  */
 @Table(name = "security_permission")
 public class SecurityPermission {
     /**
-     * 鏉冮檺涓婚敭
+     * 权限主键
      */
     @Id
     @Column(name = "PERMISSION_ID")
@@ -17,7 +17,7 @@ public class SecurityPermission {
     private String permissionId;
 
     /**
-     * 鏉冮檺鎻忚堪
+     * 权限描述
      */
     @Column(name = "DESCRIPTION")
     private String description;
@@ -35,36 +35,36 @@ public class SecurityPermission {
     private Date createdTxStamp;
 
     /**
-     * 鑾峰彇鏉冮檺涓婚敭
+     * 获取权限主键
      *
-     * @return PERMISSION_ID - 鏉冮檺涓婚敭
+     * @return PERMISSION_ID - 权限主键
      */
     public String getPermissionId() {
         return permissionId;
     }
 
     /**
-     * 璁剧疆鏉冮檺涓婚敭
+     * 设置权限主键
      *
-     * @param permissionId 鏉冮檺涓婚敭
+     * @param permissionId 权限主键
      */
     public void setPermissionId(String permissionId) {
         this.permissionId = permissionId;
     }
 
     /**
-     * 鑾峰彇鏉冮檺鎻忚堪
+     * 获取权限描述
      *
-     * @return DESCRIPTION - 鏉冮檺鎻忚堪
+     * @return DESCRIPTION - 权限描述
      */
     public String getDescription() {
         return description;
     }
 
     /**
-     * 璁剧疆鏉冮檺鎻忚堪
+     * 设置权限描述
      *
-     * @param description 鏉冮檺鎻忚堪
+     * @param description 权限描述
      */
     public void setDescription(String description) {
         this.description = description;

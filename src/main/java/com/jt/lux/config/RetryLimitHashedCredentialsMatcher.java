@@ -36,21 +36,21 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
 
 
         if (retryCount > retryMax) {
-            log.warn("æ‚¨å·²è¿ç»­é”™è¯¯è¾¾" + retryMax + "æ¬¡ï¼è¯·10åˆ†é’Ÿåå†è¯•");
-            throw new ExcessiveAttemptsException("æ‚¨å·²è¿ç»­é”™è¯¯è¾¾" + retryMax + "æ¬¡ï¼è¯·10åˆ†é’Ÿåå†è¯•");
+            log.warn("ÄúÒÑÁ¬Ğø´íÎó´ï" + retryMax + "´Î£¡Çë10·ÖÖÓºóÔÙÊÔ");
+            throw new ExcessiveAttemptsException("ÄúÒÑÁ¬Ğø´íÎó´ï" + retryMax + "´Î£¡Çë10·ÖÖÓºóÔÙÊÔ");
         }
 
         if (cache.getClass().getName().contains("RedisCache")) {
             cache.put(this.keyPrefix+username, ++retryCount);
         }
-        //è°ƒç”¨çˆ¶ç±»çš„æ ¡éªŒæ–¹æ³•
+        //µ÷ÓÃ¸¸ÀàµÄĞ£Ñé·½·¨
         boolean matches = super.doCredentialsMatch(token, info);
-        log.info("è°ƒç”¨çˆ¶ç±»çš„æ ¡éªŒæ–¹æ³•:"+matches);
+        log.info("µ÷ÓÃ¸¸ÀàµÄĞ£Ñé·½·¨:"+matches);
         if (matches) {
             cache.remove(this.keyPrefix+username);
         } else {
-            log.warn("å¯†ç é”™è¯¯ï¼Œå·²é”™è¯¯" + retryCount + "æ¬¡ï¼Œæœ€å¤šé”™è¯¯" + retryMax + "æ¬¡");
-            throw new IncorrectCredentialsException("å¯†ç é”™è¯¯ï¼Œå·²é”™è¯¯" + retryCount + "æ¬¡ï¼Œæœ€å¤šé”™è¯¯" + retryMax + "æ¬¡");
+            log.warn("ÃÜÂë´íÎó£¬ÒÑ´íÎó" + retryCount + "´Î£¬×î¶à´íÎó" + retryMax + "´Î");
+            throw new IncorrectCredentialsException("ÃÜÂë´íÎó£¬ÒÑ´íÎó" + retryCount + "´Î£¬×î¶à´íÎó" + retryMax + "´Î");
 
         }
         return true;

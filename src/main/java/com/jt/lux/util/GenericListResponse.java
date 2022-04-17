@@ -15,16 +15,16 @@ import java.util.List;
 @JsonAutoDetect(fieldVisibility = Visibility.NONE, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GenericListResponse<T> extends GenericResponse {
+public class GenericListResponse<T> extends com.jt.lux.util.GenericResponse {
 
 	/**
-	 * æ€»æ¡æ•°
+	 * ×ÜÌõÊı
 	 */
 	@JsonProperty("total")
 	private long total;
 
 	/**
-	 * æ•°æ®é›†åˆ
+	 * Êı¾İ¼¯ºÏ
 	 */
 	@JsonProperty("list")
 	private List<T> list;

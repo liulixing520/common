@@ -24,7 +24,7 @@ import javax.validation.Valid;
  * @描述： 注册
  * @作者： lux
  * @创建日期： 2020-9-25 14:31
- * @版权： 江泰保险经纪股份有限公司
+ * @版权： lux
  */
 @RestController
 @RequestMapping("/api")
@@ -48,7 +48,8 @@ public class RegisterController {
             log.error(Constants.PHONENUM_ISEXIST,loginVO.getPhoneNum());
             throw new ServiceException(Constants.PHONENUM_ISEXIST);
         }
-        return registerService.register(loginVO,request);
+        userLogin = registerService.register(loginVO,request);
+        return GenericDataResponse.okWithData(userLogin);
     }
 
 

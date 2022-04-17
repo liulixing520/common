@@ -1,8 +1,3 @@
-app:
-    id: ${spring.application.name}
-apollo:
-    bootstrap:
-        enabled: true
 server:
     port: 6130
     undertow:
@@ -18,34 +13,25 @@ spring:
         name: common
     datasource:
         driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/test?characterEncoding=utf-8&useSSL=false
+        url: jdbc:mysql://39.106.157.114:3306/test_yougu?characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
         type: com.zaxxer.hikari.HikariDataSource
         hikari:
             minimum-idle: 1
             maximum-pool-size: 5
             pool-name: dbcp1
             connection-test-query: select 1
-            username: root
-            password: jiangtai
+            username: test_yougu
+            password: 5t3)testoq0cJrpu4!
     redis:
-        host: 127.0.0.1
+        host: 39.106.157.114
         port: 6379
-        timeout: 3000
+        timeout: 30000
         pool:
             max-idle: 10
             max-wait: 10000
         max-active: 20
         maxTotal: 20
         password: crs-95idx3hg:JTdevTEST(!13)8E
-    data:
-        elasticsearch:
-            cluster-name:
-            cluster-nodes:
-            properties:
-                path:
-                    logs: target/elasticsearch/log
-                    data: target/elasticsearch/data
-        throw-exception-if-no-handler-found: true
     mvc:
         static-path-pattern: /**
     resources:
@@ -54,6 +40,10 @@ spring:
         multipart:
             maxFileSize: 1000Mb
             maxRequestSize: 1000Mb
+    servlet:
+        multipart:
+            max-request-size: 1000MB #总文件大小
+            max-file-size: 1000MB #单个文件大小
     output:
       ansi:
         enabled: always
@@ -61,6 +51,10 @@ spring:
       store-type: none
     thymeleaf:
       cache: false
+    main:
+      allow-bean-definition-overriding: true
+swagger:
+  enabled: true
 management:
     security:
         enabled: false
@@ -68,8 +62,9 @@ logging:
     level:
         root: INFO
 mybatis:
-    type-aliases-package: com.jt.lux.entity
+    type-aliases-package: com.yg.lux.entity
     mapper-locations: classpath:mapper/*.xml
+
 eureka:
     client:
         registerWithEureka: false
@@ -78,8 +73,8 @@ eureka:
             defaultZone: http://10.10.32.54:8761/eureka
     instance:
         prefer-ip-address: true
-        hostname: ${spring.cloud.client.ipAddress}
-        instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+        hostname: ${spring.cloud.client.ip-address}
+        instance-id: ${spring.cloud.client.ip-address}:${server.port}
 feign:
     hystrix:
         enabled: true
@@ -99,20 +94,96 @@ hystrix:
         isolation:
           thread:
             timeoutInMilliseconds: 6000000
+aliyun:
+    sms:
+        accessKeyId: LTAI5tRyeotzLHuZhTj5kdde
+        accessKeySecret: hDgNuBCoRfr66xVHKI0KRQIJ5pAfON
+        templateCode: SMS_227735325
+        templateCode2: SMS_215351161
+        templateCode3: SMS_238135237
+    oss:
+        endpoint: oss-cn-beijing.aliyuncs.com
+        accessKeyId: LTAI5tRyeotzLHuZhTj5kdde
+        accessKeySecret: hDgNuBCoRfr66xVHKI0KRQIJ5pAfON
+        bucketName: yougufiles
+        maxFileSize: 1000  #MB
 jtpf:
     logging:
-        name: common
+        name: com.yg.lux
         level: DEBUG
         pattern: "%red(%d) %highlight(%level) %green([%thread]) %boldMagenta(%logger{48}): %msg%n"
         dir: /var/lux/logs/${spring.application.name}
         logstash:
             destinations: "172.16.4.147:35610"
+    defaultPasswod: 123456
+    cron:
+      #在启动参数中设置以下配置
+      oneminute: 0 0 1 * * ?
+      oneminute2: 0 4 9 * * ?
+      fiveminute: 0 0 1 * * ?
+      method4: 0 59 23 * * ?
+      method5: 0 30 11 * * ?
+      onehour: 0 */1 * * * ?
     wx:
         jscode2session: https://api.weixin.qq.com/sns/jscode2session
-        APPID: wx18e2f7868d2a3949
-        SECRET: 3e3d0f2b66a6d27b9a8295eccdaf770b
-        token: xingshhwx90503991
+        APPID: wx9305f3490d07f4d3
+        SECRET: 6a4f9e991e72d74890a3880d6990cc84
         gettokenurl: https://api.weixin.qq.com/sns/oauth2/access_token
         getAccessTokenUrl: https://api.weixin.qq.com/cgi-bin/token
         getticket: https://api.weixin.qq.com/cgi-bin/ticket/getticket
         grantType: getticket
+    token:
+      redisExpiresInMinutes: 10080
+      accessTokenExpiresInMinutes: 525600
+      refreshTokenExpiresInMinutes: 525600
+    idg:
+      workerId: ${IDG_WORKER_ID:1}
+      workerIdConf: assign
+    jwt_secert: jwt_secert
+    ocr:
+      secretId: AKIDPZY8csgXx86sT3HeaPQDk2Cj9KvHEq32
+      secretKey: tb4sTikZswlwseBTWLyFepoY42lFVAUa
+      idCardUrl: https://ocr.tencentcloudapi.com
+    secret: common
+
+app:
+    id: ${spring.application.name}
+    auth:
+        # 用于验证token有效性的uri
+        checkUri: /api/check
+        # 用于获取access_token的uri
+        accessTokenUri: /api/access_token
+        # 用于刷新access_token的uri
+        refreshTokenUri: /api/refresh_token
+        userloginUri: /api/v1/userLogin
+        smsUri: /api/v1/sendSMS
+        registerUri: /api/v1/register
+        uploadFileUri: /api/v1/uploadFile
+        scanOCRUri: /api/v1/scanOCR
+    special-uri:
+        # 黑名单
+        blackList:
+            /auth-svc/123,/auth-svc/124
+        # 白名单
+        whiteList:
+            /swagger-demo/**/*
+            ,/jtpf/swagger-demo/**/*
+            ,/**/swagger-ui.html*
+            ,/**/swagger-ui.html*/**/*
+            ,/**/swagger-resources*
+            ,/**/swagger-resources/*
+            ,/**/swagger-resources/**/*
+            ,/**/v2/api-docs*
+            ,/**/v2/api-docs/**/*
+            ,/favicon.ico
+            ,/**/*.htm
+            ,/**/*.html
+            ,/**/*.js
+            ,/**/*.jpg
+            ,/**/*.jpeg
+            ,/**/*.gif
+            ,/**/*.css
+            ,/**/*.png
+        # 灰名单，获取用户身份，但不校验权限
+        grayList:
+            /123/456

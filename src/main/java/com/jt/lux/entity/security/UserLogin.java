@@ -1,50 +1,52 @@
 package com.jt.lux.entity.security;
 
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.*;
 
 /**
- * 鐧诲綍璐︽埛
+ * 登录账户
  */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "user_login")
-public class UserLogin {
+public class UserLogin implements Serializable {
     /**
-     * 鐧诲綍璐︽埛id
+     * 登录账户id
      */
     @Id
     @Column(name = "USER_LOGIN_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty("登录账户id")
     private String userLoginId;
 
     /**
-     * 鐧诲綍瀵嗙爜
+     * 登录密码
      */
     @JsonIgnore
     @Column(name = "CURRENT_PASSWORD")
     private String currentPassword;
 
     /**
-     * 鍔犵洂
+     * 加盐
      */
     @JsonIgnore
     @Column(name = "SALT")
     private String salt;
 
     /**
-     * 瀵嗙爜鎻愮ず
+     * 密码提示
      */
     @JsonIgnore
     @Column(name = "PASSWORD_HINT")
@@ -52,16 +54,18 @@ public class UserLogin {
 
 
 
-
+    @JsonIgnore
+    @ApiModelProperty("是否系统管理员 Y/N")
     @Column(name = "IS_SYSTEM")
     private String isSystem;
-
+    @JsonIgnore
+    @ApiModelProperty("是否启用")
     @Column(name = "ENABLED")
     private String enabled;
 
     @Column(name = "HAS_LOGGED_OUT")
     private String hasLoggedOut;
-
+    @JsonIgnore
     @Column(name = "REQUIRE_PASSWORD_CHANGE")
     private String requirePasswordChange;
 
@@ -79,41 +83,63 @@ public class UserLogin {
 
     @Column(name = "SUCCESSIVE_FAILED_LOGINS")
     private BigDecimal successiveFailedLogins;
-
+    @JsonIgnore
     @Column(name = "EXTERNAL_AUTH_ID")
     private String externalAuthId;
-
+    @JsonIgnore
     @Column(name = "USER_LDAP_DN")
     private String userLdapDn;
 
     @Column(name = "LAST_UPDATED_STAMP")
     private Date lastUpdatedStamp;
-
+    @JsonIgnore
     @Column(name = "LAST_UPDATED_TX_STAMP")
     private Date lastUpdatedTxStamp;
 
     @Column(name = "CREATED_STAMP")
     private Date createdStamp;
-
+    @JsonIgnore
     @Column(name = "CREATED_TX_STAMP")
     private Date createdTxStamp;
 
+    @ApiModelProperty("当事人id")
     @Column(name = "PARTY_ID")
     private String partyId;
 
+    @ApiModelProperty("手机号")
     @Column(name = "MOBILE_NUM")
     private String mobileNum;
 
-    @Column(name = "DOCTOR_TYPE")
-    private String doctorType;
+    @ApiModelProperty("openid")
+    @Column(name = "OPENID")
+    private String openid;
 
-    @Column(name = "EXPERT_PARTY_ID")
-    private String expertPartyId;
+    /**
+     * 是否认证
+     * Y 认证成功
+     * M 认证中
+     * N 认证失败
+     * U 未认证
+     */
+    @ApiModelProperty("是否认证  Y 认证成功,M 认证中,N 认证失败 U 未认证")
+    @Column(name = "STATUS_AUTH")
+    private String statusAuth;
 
-    @Column(name = "WORK_GROUP_ID")
-    private String workGroupId;
+    public String getStatusAuth() {
+        return statusAuth;
+    }
 
+    public void setStatusAuth(String statusAuth) {
+        this.statusAuth = statusAuth;
+    }
 
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
 
     public String getSalt() {
         return salt;
@@ -124,54 +150,54 @@ public class UserLogin {
     }
 
     /**
-     * 鑾峰彇鐧诲綍璐︽埛id
+     * 获取登录账户id
      *
-     * @return USER_LOGIN_ID - 鐧诲綍璐︽埛id
+     * @return USER_LOGIN_ID - 登录账户id
      */
     public String getUserLoginId() {
         return userLoginId;
     }
 
     /**
-     * 璁剧疆鐧诲綍璐︽埛id
+     * 设置登录账户id
      *
-     * @param userLoginId 鐧诲綍璐︽埛id
+     * @param userLoginId 登录账户id
      */
     public void setUserLoginId(String userLoginId) {
         this.userLoginId = userLoginId;
     }
 
     /**
-     * 鑾峰彇鐧诲綍瀵嗙爜
+     * 获取登录密码
      *
-     * @return CURRENT_PASSWORD - 鐧诲綍瀵嗙爜
+     * @return CURRENT_PASSWORD - 登录密码
      */
     public String getCurrentPassword() {
         return currentPassword;
     }
 
     /**
-     * 璁剧疆鐧诲綍瀵嗙爜
+     * 设置登录密码
      *
-     * @param currentPassword 鐧诲綍瀵嗙爜
+     * @param currentPassword 登录密码
      */
     public void setCurrentPassword(String currentPassword) {
         this.currentPassword = currentPassword;
     }
 
     /**
-     * 鑾峰彇瀵嗙爜鎻愮ず
+     * 获取密码提示
      *
-     * @return PASSWORD_HINT - 瀵嗙爜鎻愮ず
+     * @return PASSWORD_HINT - 密码提示
      */
     public String getPasswordHint() {
         return passwordHint;
     }
 
     /**
-     * 璁剧疆瀵嗙爜鎻愮ず
+     * 设置密码提示
      *
-     * @param passwordHint 瀵嗙爜鎻愮ず
+     * @param passwordHint 密码提示
      */
     public void setPasswordHint(String passwordHint) {
         this.passwordHint = passwordHint;
@@ -415,45 +441,5 @@ public class UserLogin {
         this.mobileNum = mobileNum;
     }
 
-    /**
-     * @return DOCTOR_TYPE
-     */
-    public String getDoctorType() {
-        return doctorType;
-    }
 
-    /**
-     * @param doctorType
-     */
-    public void setDoctorType(String doctorType) {
-        this.doctorType = doctorType;
-    }
-
-    /**
-     * @return EXPERT_PARTY_ID
-     */
-    public String getExpertPartyId() {
-        return expertPartyId;
-    }
-
-    /**
-     * @param expertPartyId
-     */
-    public void setExpertPartyId(String expertPartyId) {
-        this.expertPartyId = expertPartyId;
-    }
-
-    /**
-     * @return WORK_GROUP_ID
-     */
-    public String getWorkGroupId() {
-        return workGroupId;
-    }
-
-    /**
-     * @param workGroupId
-     */
-    public void setWorkGroupId(String workGroupId) {
-        this.workGroupId = workGroupId;
-    }
 }

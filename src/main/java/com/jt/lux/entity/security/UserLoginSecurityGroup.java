@@ -1,25 +1,39 @@
 package com.jt.lux.entity.security;
 
-import java.util.Date;
 import javax.persistence.*;
+import java.util.Date;
 
 /**
- * ç”¨æˆ·ç™»å½•å®‰å…¨ç»„
+ * µÇÂ½ÓÃ»§È¨ÏÞ×é
  */
 @Table(name = "user_login_security_group")
 public class UserLoginSecurityGroup {
+
+    /**
+     * µÇÂ½ÓÃ»§
+     */
     @Id
     @Column(name = "USER_LOGIN_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String userLoginId;
 
+    /**
+     * È¨ÏÞ×éid
+     */
     @Id
     @Column(name = "GROUP_ID")
     private String groupId;
 
+    /**
+     * ¿ªÊ¼ÈÕÆÚ
+     */
     @Id
     @Column(name = "FROM_DATE")
     private Date fromDate;
 
+    /**
+     * ¹ýÆÚÈÕÆÚ
+     */
     @Column(name = "THRU_DATE")
     private Date thruDate;
 

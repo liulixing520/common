@@ -1,15 +1,15 @@
 package com.jt.lux.entity.security;
 
-import java.util.Date;
 import javax.persistence.*;
+import java.util.Date;
 
 /**
- * å®‰å…¨ç»„
+ * °²È«×é
  */
 @Table(name = "security_group")
 public class SecurityGroup {
     /**
-     * å®‰å…¨ç»„ä¸»é”®
+     * °²È«×éÖ÷¼ü
      */
     @Id
     @Column(name = "GROUP_ID")
@@ -17,7 +17,7 @@ public class SecurityGroup {
     private String groupId;
 
     /**
-     * å®‰å…¨ç»„æè¿°
+     * °²È«×éÃèÊö
      */
     @Column(name = "DESCRIPTION")
     private String description;
@@ -35,36 +35,36 @@ public class SecurityGroup {
     private Date createdTxStamp;
 
     /**
-     * è·å–å®‰å…¨ç»„ä¸»é”®
+     * »ñÈ¡°²È«×éÖ÷¼ü
      *
-     * @return GROUP_ID - å®‰å…¨ç»„ä¸»é”®
+     * @return GROUP_ID - °²È«×éÖ÷¼ü
      */
     public String getGroupId() {
         return groupId;
     }
 
     /**
-     * è®¾ç½®å®‰å…¨ç»„ä¸»é”®
+     * ÉèÖÃ°²È«×éÖ÷¼ü
      *
-     * @param groupId å®‰å…¨ç»„ä¸»é”®
+     * @param groupId °²È«×éÖ÷¼ü
      */
     public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
 
     /**
-     * è·å–å®‰å…¨ç»„æè¿°
+     * »ñÈ¡°²È«×éÃèÊö
      *
-     * @return DESCRIPTION - å®‰å…¨ç»„æè¿°
+     * @return DESCRIPTION - °²È«×éÃèÊö
      */
     public String getDescription() {
         return description;
     }
 
     /**
-     * è®¾ç½®å®‰å…¨ç»„æè¿°
+     * ÉèÖÃ°²È«×éÃèÊö
      *
-     * @param description å®‰å…¨ç»„æè¿°
+     * @param description °²È«×éÃèÊö
      */
     public void setDescription(String description) {
         this.description = description;
