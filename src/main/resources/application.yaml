@@ -96,15 +96,15 @@ hystrix:
             timeoutInMilliseconds: 6000000
 aliyun:
     sms:
-        accessKeyId: LTAI5tRyeotzLHuZhTj5kdde
-        accessKeySecret: hDgNuBCoRfr66xVHKI0KRQIJ5pAfON
-        templateCode: SMS_227735325
-        templateCode2: SMS_215351161
-        templateCode3: SMS_238135237
+        accessKeyId:
+        accessKeySecret:
+        templateCode: x
+        templateCode2: x
+        templateCode3: x
     oss:
-        endpoint: oss-cn-beijing.aliyuncs.com
-        accessKeyId: LTAI5tRyeotzLHuZhTj5kdde
-        accessKeySecret: hDgNuBCoRfr66xVHKI0KRQIJ5pAfON
+        endpoint:
+        accessKeyId: x
+        accessKeySecret: x
         bucketName: yougufiles
         maxFileSize: 1000  #MB
 jtpf:
