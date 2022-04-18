@@ -11,8 +11,8 @@ public class HmacSHA1Util {
     private static final String HMAC_SHA1_ALGORITHM = "HmacSHA1";
 
     /**
-     * Ê¹ÓÃ HMAC-SHA1 Ç©Ãû·½·¨¶Ôdata½øĞĞÇ©Ãû
-    ¼ÓÃÜºóµÄ×Ö·û´®
+     * ä½¿ç”¨ HMAC-SHA1 ç­¾åæ–¹æ³•å¯¹dataè¿›è¡Œç­¾å
+    åŠ å¯†åçš„å­—ç¬¦ä¸²
      */
     public static String sign(String s, String key) throws Exception {
         Mac mac = Mac.getInstance(HMAC_SHA1_ALGORITHM);
@@ -25,7 +25,7 @@ public class HmacSHA1Util {
     public static String getStringToSign(String method, String endpoint, TreeMap<String, Object> params) {
         StringBuilder s2s = new StringBuilder();
         s2s.append(method).append(endpoint).append("/?");
-        // Ç©ÃûÊ±ÒªÇó¶Ô²ÎÊı½øĞĞ×ÖµäÅÅĞò£¬´Ë´¦ÓÃTreeMap±£Ö¤Ë³Ğò
+        // ç­¾åæ—¶è¦æ±‚å¯¹å‚æ•°è¿›è¡Œå­—å…¸æ’åºï¼Œæ­¤å¤„ç”¨TreeMapä¿è¯é¡ºåº
         for (String k : params.keySet()) {
             s2s.append(k).append("=").append(params.get(k).toString()).append("&");
         }
@@ -33,7 +33,7 @@ public class HmacSHA1Util {
     }
 
     /**
-     * SHA1¼ÓÃÜ
+     * SHA1åŠ å¯†
      * @param str
      * @return
      */
@@ -63,9 +63,9 @@ public class HmacSHA1Util {
     }
 
     /**
-     * @Comment SHA1ÊµÏÖ
+     * @Comment SHA1å®ç°
      * @Author Ron
-     * @Date 2017Äê9ÔÂ13ÈÕ ÏÂÎç3:30:36
+     * @Date 2017å¹´9æœˆ13æ—¥ ä¸‹åˆ3:30:36
      * @return
      */
     public static String shaEncode(String inStr) throws Exception {
@@ -93,24 +93,11 @@ public class HmacSHA1Util {
 
 
     /**
-     * ²âÊÔ
+     * æµ‹è¯•
      * @param args
      */
     public static void main(String[] args) throws Exception {
-        // TreeMap¿ÉÒÔ×Ô¶¯ÅÅĞò
-//        TreeMap<String, Object> params = new TreeMap<String, Object>();
-//        params.put("Nonce", new Random().nextInt(Integer.MAX_VALUE));
-//        // Êµ¼Êµ÷ÓÃÊ±Ó¦µ±Ê¹ÓÃÏµÍ³µ±Ç°Ê±¼ä
-//        params.put("Timestamp", System.currentTimeMillis() / 1000);
-//        params.put("Region", "ap-beijing");
-//        params.put("SecretId", "AKIDXtkLp3QqSpxwhHvnvoSv85vc5cvyYJbh");
-//        params.put("Action", "IDCardOCR");
-//        params.put("Version", "2018-11-19");
-//        params.put("ImageUrl", "http://gw.jiangtai.com/res-svc/res/showFile?fileId=1730891645883522901");
-//
-//        String str2sign = getStringToSign("GET", "ocr.ap-beijing.tencentcloudapi.com", params);
-//        String signature = sign(str2sign, "2oWy1tjlX4PVO2SefU5ZotjP2PXP2QZS");
-//        System.out.println("Signature=" + signature);
+
 
         String ss =  string2Sha1("712db037ebc482fc1587609493917ce977299712db037ebc482fc2b520f04");
         String ss2 =  shaEncode("c3048c2eae53d8ea+1546930204190+7eeb57e7c3048c2eae53d8eae2598954");
